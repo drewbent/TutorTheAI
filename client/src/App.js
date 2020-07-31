@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Launcher } from 'react-chat-window/lib/index.js';
+import { Select } from '@blueprintjs/select';
 
 const API_URL = 'http://localhost:5000/api/v1/';
 const axiosAPI = axios.create({
@@ -58,6 +59,9 @@ const App = () => {
 
   return (
     <div>
+      <Select
+        items={ ['Hello', 'Testing' ]}
+        />
       <Launcher
         agentProfile={{
           teamName: 'Tutor the AI',
