@@ -32,7 +32,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.13.0",
     "eslint-plugin-react": "^7.12.4",
-    "nwb": "^0.23.0",
+    "nwb": "^0.25.2",
     "react": "15.6.1",
     "react-dom": "15.6.1"
   },

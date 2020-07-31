@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Launcher } from 'react-chat-window/lib/index.js';
+import { Launcher } from './react-chat-window/lib/index.js';
 
 const API_URL = 'http://localhost:5000/api/v1/';
 const axiosAPI = axios.create({
