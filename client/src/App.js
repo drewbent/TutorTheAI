@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Launcher } from 'react-chat-window/lib/index.js';
-import { Select } from '@blueprintjs/select';
+import { Launcher } from './react-chat-window/lib/index.js';
+import { Popover, Menu, Button, Position } from '@blueprintjs/core';
+import styled from 'styled-components'
 
 const API_URL = 'http://localhost:5000/api/v1/';
 const axiosAPI = axios.create({
@@ -58,10 +59,29 @@ const App = () => {
   }
 
   return (
-    <div>
-      <Select
-        items={ ['Hello', 'Testing' ]}
-        />
+    <>
+      <S.Body>
+        <Popover
+          content={
+            <Menu>
+              <Menu.Divider title="Chemistry" />
+              <Menu.Item text="Hybridization" />
+              <Menu.Item text="Periodic Table" />
+              <Menu.Divider title="Biology" />
+              <Menu.Item text="DNA-RNA-Protein" />
+              <Menu.Item text="CRISPR" />
+              <Menu.Item text="Immunology" />
+              <Menu.Divider title="Physics" />
+              <Menu.Item text="Conservation of energy" />
+              <Menu.Item text="Quantum mechanics" />
+            </Menu>
+          }
+          position={ Position.RIGHT }
+        >
+          <Button text="Choose a concept" large="true" rightIcon="caret-down" />
+        </Popover>
+      </S.Body>
+
       <Launcher
         agentProfile={{
           teamName: 'Tutor the AI',
@@ -69,9 +89,19 @@ const App = () => {
         }}
         onMessageWasSent={ handleUserMessage }
         messageList={ messageList }
-      />
-    </div>
+        />
+    </>
   );
 }
 
 export default App;
+
+const S = {};
+S.Body = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+`;
