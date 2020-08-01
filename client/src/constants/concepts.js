@@ -1,3 +1,5 @@
+export const MAX_NUM_OF_USER_MESSAGES = 10;
+
 export const CONCEPTS_METADATA = [
   {
     sectionTitle: 'Chemistry'
@@ -8,7 +10,7 @@ export const CONCEPTS_METADATA = [
     humanFirstMessage: `Let's look at ethene and try to understand its hybridization. Do you remember the chemical formula for ethene?`,
     aiFirstMessage: 'C2H4.',
     instructions: [
-      `Teach the AI why orbitals hybridize, and particularly, how ethene’s sp^2 hybridization works.`,
+      `Tutor the AI why orbitals hybridize, and particularly, how ethene’s sp^2 hybridization works.`,
       `Help the AI learn the concept through careful probing. Don’t just tell it everything.`
     ]
   },

@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Launcher } from 'react-chat-window';
 import logoWhiteBkg from '../images/logo_white_bkg.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
+import { MAX_NUM_OF_USER_MESSAGES } from '../constants/concepts';
 
 const API_URL = 'http://localhost:5000/api/v1/';
 const axiosAPI = axios.create({
@@ -32,6 +33,10 @@ export default function ActiveConversation(props) {
   const [messageList, setMessageList] = useState([initialMessage]);
   const [hasStarted, setHasStarted] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const messagesRemaining = (
+    Math.floor(1 + MAX_NUM_OF_USER_MESSAGES - messageList.length / 2)
+  );
 
   if (!concept) {
     return <Redirect to="/" />
@@ -99,7 +104,7 @@ export default function ActiveConversation(props) {
               </S.Bullet>
             ))}
             <S.Bullet>
-              You have 10 messages remaining to accomplish this task.
+              You have { messagesRemaining } messages remaining to accomplish this task.
             </S.Bullet>
           </S.Bullets>
         </S.Paragraph>
