@@ -1,14 +1,15 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Launcher } from 'react-chat-window';
 import logoWhiteBkg from '../images/logo_white_bkg.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
 import { MAX_NUM_OF_USER_MESSAGES } from '../constants/concepts';
+import { API_URL } from '../constants/axios';
+import moment from 'moment';
 
-const API_URL = 'http://localhost:5000/api/v1/';
 const axiosAPI = axios.create({
   baseURL: API_URL
 });
@@ -25,6 +26,8 @@ export default function ActiveConversation(props) {
   const locationState = props.location.state;
   const concept = locationState && locationState.concept;
 
+  const history = useHistory();
+
   const initialMessage = concept && composeMessage({
     text: concept.humanFirstMessage,
     me: true
@@ -37,6 +40,24 @@ export default function ActiveConversation(props) {
   const messagesRemaining = (
     Math.floor(1 + MAX_NUM_OF_USER_MESSAGES - messageList.length / 2)
   );
+
+  useEffect(() => {
+    if (messagesRemaining === 0) {
+      // Completed with messages
+      console.log(messageList);
+      setTimeout(() => {
+        const time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+
+        console.log(messageList);
+
+        history.push('/conversation', {
+          messageList: messageList,
+          concept: concept,
+          time: time
+        });
+      }, 1800);
+    }
+  }, [messagesRemaining, concept, history, messageList]);
 
   if (!concept) {
     return <Redirect to="/" />
@@ -51,6 +72,18 @@ export default function ActiveConversation(props) {
   }
 
   async function handleUserMessage(message) {
+    const prevMessage = messageList[messageList.length - 1];
+    const prevMessageIsMe = (prevMessage.author === 'me');
+    if (prevMessageIsMe) {
+      // User tried to submit two questions in a row.
+      return;
+    }
+    
+    if (messagesRemaining <= 0) {
+      // User quickly submitted a question even though they had no remaining.
+      return;
+    }
+
     const newMessageList = [...messageList, message];
     setMessageList(newMessageList);
 
@@ -61,7 +94,8 @@ export default function ActiveConversation(props) {
 
     const choices = resp && resp.data && resp.data.choices;
     const respText = (
-      choices && choices.length >= 1 && choices[0] && choices[0].text
+      choices && choices.length >= 1 && choices[0] && choices[0].text &&
+        choices[0].text.trim()
     );
     handleGPT3Message(respText);
   }

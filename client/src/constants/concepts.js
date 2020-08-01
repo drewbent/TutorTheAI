@@ -1,4 +1,4 @@
-export const MAX_NUM_OF_USER_MESSAGES = 10;
+export const MAX_NUM_OF_USER_MESSAGES = 5;
 
 export const CONCEPTS_METADATA = [
   {
