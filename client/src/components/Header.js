@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import logo from '../images/logo.png';
 import { Icon, Dialog } from '@blueprintjs/core';
 import { PropTypes } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function Header(props) {
   const { noLogo } = props;
@@ -18,8 +19,8 @@ export default function Header(props) {
       <S.Header>
         {!noLogo &&
           <>
-            <img src={ logo } alt="Logo" height={ 35 } />
-            <h3>Tutor the AI</h3>
+            <S.Link to='/'><img src={ logo } alt="Logo" height={ 35 } /></S.Link>
+            <S.Link to='/'><h3>Tutor the AI</h3></S.Link>
           </>
         }
         
@@ -46,7 +47,7 @@ export default function Header(props) {
           </p>
 
           <p>
-          TutorTheAI provides you with the opportunity to practice the <a href="https://fs.blog/2012/04/feynman-technique/">Feynman Learning Technique</a> through tutoring an AI.
+          TutorTheAI provides you with the opportunity to practice the <a href="https://fs.blog/2012/04/feynman-technique/" target="_blank" rel="noopener noreferrer">Feynman Learning Technique</a> through tutoring an AI.
           </p>
 
           <ul>
@@ -55,6 +56,10 @@ export default function Header(props) {
             <li>Identify your gaps in understanding</li>
             <li>Fill in those gaps</li>
           </ul>
+
+          <p>
+            Brain icon made by <a href="https://www.flaticon.com/free-icon/brain_749854" title="Skyclick" target="_blank" rel="noopener noreferrer">Skyclick</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a>
+          </p>
         </S.DialogBody>
       </Dialog>
     </>
@@ -66,14 +71,21 @@ Header.propTypes = {
 }
 
 const S = {};
+S.Link = styled(Link)`
+  &, &:hover, &:visited, &:active, &:focus {
+    color: inherit;
+    text-decoration: inherit;
+  }
+`;
 S.Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  padding: 5px 10px;
+  padding: 0 20px;
+  height: 50px;
 
-  * {
+  *:not(:last-child) {
     margin-right: 5px;
   }
 `;

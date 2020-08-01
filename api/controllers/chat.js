@@ -1,4 +1,5 @@
 const axios = require('axios');
+const Chat = require('../models/chat.js');
 const { PROMPTS } = require('../constants/prompts');
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/';
@@ -12,7 +13,7 @@ const axiosAPI = axios.create({
 });
 
 const ChatController = {
-  chat: async (req, res) => {
+  completion: async (req, res) => {
     const promptName = req.body.promptName;
     const messageList = req.body.messageList;
     const prompt = ChatControllerHelper.getPrompt(messageList, promptName);
@@ -39,7 +40,54 @@ const ChatController = {
       console.log(err);
       res.status(400).json(`Error: ${ err }`);
     }
-  
+  },
+
+  save: async (req, res) => {
+    const messageList = req.body.messageList;
+    const concept = req.body.concept;
+    const time = req.body.time;
+
+    const promptName = concept.name;
+    const prompt = ChatControllerHelper.getPrompt(messageList, promptName);
+    const messages = messageList.map(msg => ({
+      author: msg.author,
+      text: msg.data.text
+    }));
+    const displayedTimestamp = time;
+
+    const props = {
+      promptName,
+      prompt,
+      messages,
+      displayedTimestamp
+    }
+    try {
+      const newChat = new Chat(props);
+      const savedChat = await newChat.save();
+      const resp = {
+        id: savedChat._id
+      };
+
+      res.json(resp);
+    }
+    catch(err) {
+      console.log(err);
+      res.status(400).json(`Error: ${ err }`);
+    }
+  },
+
+  conversation: async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const chat = await Chat.findById(id);
+
+      res.json(chat);
+    }
+    catch(err) {
+      console.log(err);
+      res.status(400).json(`Error: ${ err }`);
+    }
   }
 }
 

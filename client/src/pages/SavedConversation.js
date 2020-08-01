@@ -1,38 +1,91 @@
+import { Card, Elevation, Spinner } from '@blueprintjs/core';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import { Button, Card, Elevation } from '@blueprintjs/core';
+import React, { useEffect, useState } from 'react';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import logo from '../images/logo.png';
-import { Redirect } from 'react-router-dom';
+import Header from '../components/Header';
+import SaveSessionButton from '../components/SaveSessionButton';
 import { API_URL } from '../constants/axios';
+import logo from '../images/logo.png';
+import { getConceptDisplayName } from '../helpers';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
 });
 
 export default function SavedConversation(props) {
-  const locationState = props.location.state;
-  const messageList = locationState && locationState.messageList;
-  const concept = locationState && locationState.concept;
-  const time = locationState && locationState.time;
+  // Should either have location state (coming directly from having
+  // had the conversation) or have url params (linked to it by friend or as a
+  // reviewer).
 
-  if (!messageList || !concept || !time) {
+  const history = useHistory();
+
+  // Location state
+  const locationState = props.location.state;
+  const messageListDefault = locationState && locationState.messageList;
+  const conceptDefault = locationState && locationState.concept;
+  const timeDefault = locationState && locationState.time;
+  const [messageList, setMessageList] = useState(messageListDefault);
+  const [concept, setConcept] = useState(conceptDefault);
+  const [time, setTime] = useState(timeDefault);
+
+  // URL params
+  const { id } = useParams();
+  const hasParams = !!id;
+  const [hasFetchedData, setHasFetchedData] = useState(false);
+  useEffect(() => {
+    async function fetchConversation() {
+      try {        
+        const resp = await axiosAPI.get(`/conversation/${id}`);
+        const data = resp && resp.data;
+
+        setTime(data.displayedTimestamp);
+        setConcept({
+          displayName: getConceptDisplayName(data.promptName)
+        });
+        setMessageList(data.messages && data.messages.map(msg => ({
+          author: msg.author,
+          type: 'text',
+          data: {
+            text: msg.text
+          }
+        })));
+        
+        setHasFetchedData(true);
+      }
+      catch(err) {
+        console.log(err);
+        history.push('/');
+      }
+    }
+
+    const missingAllData = (!messageList && !concept && !time);
+    if (hasParams && missingAllData) {
+      // Only fetch from database if all data is missing and params are
+      // provided.
+      fetchConversation();
+    }
+  }, [hasParams, id, time, concept, messageList, history]);
+
+  const missingAnyData = (!messageList || !concept || !time);
+  if ((missingAnyData && !hasParams) ||
+      (missingAnyData && hasParams && hasFetchedData)) {
+    // Redirect if data doesn't exist and it's not coming via params/API.
+    // Also redirect if data did come from params/API but it wasn't complete.
     return <Redirect to="/" />
   }
 
-  async function handleSaveClicked() {
-    const resp = await axiosAPI.post('/csavehat', {
-      messageList,
-      concept
-    });
+  if (missingAnyData) {
+    // If data is still missing, then we must be waiting for it to load via
+    // ajax from the API.
+    return <S.Spinner size={ 50 } />
   }
 
   const messageListExtended = [{
     author: 'them',
     type: 'text',
     data: {
-      text: `Hi! I'm the AI.`
+      text: `Hi! I'm the AI. Thanks for helping tutor me.`
     }
   }, ...messageList]
 
@@ -47,15 +100,16 @@ export default function SavedConversation(props) {
         { time }
       </S.Subtitle>
 
-      <S.TopControls>
-        <Button
-            onClick={ handleSaveClicked }
-            large={ true }
-            icon={ 'saved' }
-            intent={ 'success' }>
-          Save message history
-        </Button>
-      </S.TopControls>
+      {!hasParams &&
+        <S.TopControls>
+          <SaveSessionButton
+            dataToSave={{
+              messageList,
+              concept,
+              time
+            }} />
+        </S.TopControls>
+      }
 
       <S.CardList>
         {messageListExtended.map((message, i) => {
@@ -83,6 +137,9 @@ export default function SavedConversation(props) {
 }
 
 const S = {};
+S.Spinner = styled(Spinner)`
+  height: 100%;
+`;
 S.Title = styled.h1`
   text-align: center;
 `;

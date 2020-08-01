@@ -44,11 +44,8 @@ export default function ActiveConversation(props) {
   useEffect(() => {
     if (messagesRemaining === 0) {
       // Completed with messages
-      console.log(messageList);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         const time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-
-        console.log(messageList);
 
         history.push('/conversation', {
           messageList: messageList,
@@ -56,6 +53,8 @@ export default function ActiveConversation(props) {
           time: time
         });
       }, 1800);
+
+      return () => clearTimeout(timer);
     }
   }, [messagesRemaining, concept, history, messageList]);
 
@@ -87,7 +86,7 @@ export default function ActiveConversation(props) {
     const newMessageList = [...messageList, message];
     setMessageList(newMessageList);
 
-    const resp = await axiosAPI.post('/chat', {
+    const resp = await axiosAPI.post('/completion', {
       messageList: newMessageList,
       promptName: concept.name
     });

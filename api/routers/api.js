@@ -3,6 +3,8 @@ const ChatController = require('../controllers/chat.js');
 
 const router = express.Router();
 
-router.post('/chat', ChatController.chat);
+router.post('/completion', ChatController.completion);
+router.post('/save', ChatController.save);
+router.get('/conversation/:id', ChatController.conversation);
 
 module.exports = router;

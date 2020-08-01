@@ -15,7 +15,7 @@ export default function Homepage(props) {
       <S.SpacerTop />
       <S.Body>
         <img src={ logo } alt="Logo" width={ 100 } />
-        <h1>Teach the AI</h1>
+        <h1>Tutor the AI</h1>
         
         <ConceptPicker
           onChosen={

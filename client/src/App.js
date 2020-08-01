@@ -9,8 +9,8 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/" exact component={ Homepage } />
-        <Route path="/tutoring" exact component={ ActiveConversation } />
-        <Route path="/conversation" exact component={ SavedConversation } />
+        <Route path="/tutoring" component={ ActiveConversation } />
+        <Route path="/conversation/:id?" component={ SavedConversation } />
       </Switch>
     </Router>
   )
