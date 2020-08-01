@@ -55,7 +55,8 @@ export default function ActiveConversation(props) {
     setMessageList(newMessageList);
 
     const resp = await axiosAPI.post('/chat', {
-      messageList: newMessageList
+      messageList: newMessageList,
+      promptName: concept.name
     });
 
     const choices = resp && resp.data && resp.data.choices;
@@ -104,7 +105,7 @@ export default function ActiveConversation(props) {
               </S.Bullet>
             ))}
             <S.Bullet>
-              You have { messagesRemaining } messages remaining to accomplish this task.
+              You have <b>{ messagesRemaining } messages</b> remaining to accomplish this task.
             </S.Bullet>
           </S.Bullets>
         </S.Paragraph>
