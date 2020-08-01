@@ -8,6 +8,7 @@ import SaveSessionButton from '../components/SaveSessionButton';
 import { API_URL } from '../constants/axios';
 import logo from '../images/logo.png';
 import { getConceptDisplayName } from '../helpers';
+import EvaluationControls from '../components/EvaluationControls';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -31,6 +32,7 @@ export default function SavedConversation(props) {
 
   // URL params
   const { id } = useParams();
+  const [currentIdDownloading, setCurrentIdDownloading] = useState(id);
   const hasParams = !!id;
   const [hasFetchedData, setHasFetchedData] = useState(false);
   useEffect(() => {
@@ -58,14 +60,15 @@ export default function SavedConversation(props) {
         history.push('/');
       }
     }
-
+    console.log('test');
     const missingAllData = (!messageList && !concept && !time);
-    if (hasParams && missingAllData) {
+    if ((hasParams && missingAllData) || id !== currentIdDownloading) {
       // Only fetch from database if all data is missing and params are
-      // provided.
+      // provided ... OR ... if there is a new id / data to fetch.
+      setCurrentIdDownloading(id);
       fetchConversation();
     }
-  }, [hasParams, id, time, concept, messageList, history]);
+  }, [hasParams, id, time, concept, messageList, history, currentIdDownloading]);
 
   const missingAnyData = (!messageList || !concept || !time);
   if ((missingAnyData && !hasParams) ||
@@ -79,6 +82,16 @@ export default function SavedConversation(props) {
     // If data is still missing, then we must be waiting for it to load via
     // ajax from the API.
     return <S.Spinner size={ 50 } />
+  }
+
+  // Check if isEvaluating.
+  const isEvaluating = locationState && locationState.isEvaluating;
+  const evaluationObjectIds = (
+    locationState && locationState.evaluationObjectIds
+  );
+  let newEvaluationObjectIds = [];
+  if (evaluationObjectIds) {
+    newEvaluationObjectIds = [...evaluationObjectIds, id];
   }
 
   const messageListExtended = [{
@@ -101,14 +114,14 @@ export default function SavedConversation(props) {
       </S.Subtitle>
 
       {!hasParams &&
-        <S.TopControls>
+        <S.Centered>
           <SaveSessionButton
             dataToSave={{
               messageList,
               concept,
               time
             }} />
-        </S.TopControls>
+        </S.Centered>
       }
 
       <S.CardList>
@@ -132,6 +145,13 @@ export default function SavedConversation(props) {
 
         })}
       </S.CardList>
+
+      {isEvaluating &&
+        <S.Centered>
+          <EvaluationControls
+            newEvaluationObjectIds={ newEvaluationObjectIds } />
+        </S.Centered>
+      }
     </>
   );
 }
@@ -146,7 +166,7 @@ S.Title = styled.h1`
 S.Subtitle = styled.h3`
   text-align: center;
 `;
-S.TopControls = styled.div`
+S.Centered = styled.div`
   text-align: center;
 `;
 S.CardList = styled.div`

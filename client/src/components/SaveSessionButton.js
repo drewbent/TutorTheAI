@@ -18,11 +18,12 @@ export default function SaveSessionButton(props) {
   const [isSaving, setIsSaving ] = useState(false);
 
   async function handleSaveClicked() {
+    // TODO(drew): Error handling?
     setIsSaving(true);
     const resp = await axiosAPI.post('/save', dataToSave);
     setIsSaving(false);
     
-    const id = resp.data.id;
+    const id = resp && resp.data && resp.data.id;
     history.push(`/conversation/${id}`);
 
     AppToaster.show({

@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Chat = require('../models/chat.js');
 const { PROMPTS } = require('../constants/prompts');
+const mongoose = require('mongoose');
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/';
 
@@ -83,6 +84,38 @@ const ChatController = {
       const chat = await Chat.findById(id);
 
       res.json(chat);
+    }
+    catch(err) {
+      console.log(err);
+      res.status(400).json(`Error: ${ err }`);
+    }
+  },
+
+  random: async (req, res) => {
+    const prevIds = req.body.prevIds;
+
+    const prevObjectIds = prevIds.map(id => mongoose.Types.ObjectId(id));
+
+    try {
+      const chats = await Chat.aggregate([
+        {
+          $match: {
+            _id: {
+              $not: { $in: prevObjectIds }
+            }
+          }
+        },
+        {
+          $sample: { size: 1 }
+        }
+      ]);
+      const chat = (chats.length > 0) && chats[0];
+
+      const resp = {
+        id: chat && chat._id
+      }
+
+      res.json(resp);
     }
     catch(err) {
       console.log(err);

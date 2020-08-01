@@ -2,6 +2,7 @@ import { Button, Menu, Popover, Position } from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CONCEPTS_METADATA } from '../constants/concepts';
+import styled from 'styled-components';
 
 export default function ConceptPicker(props) {
   const { onChosen } = props;
@@ -26,13 +27,25 @@ export default function ConceptPicker(props) {
           ))}
         </Menu>
       }
-      position={ Position.RIGHT }
-    >
-      <Button text="Choose a concept" large="true" rightIcon="caret-down" />
+      position={ Position.RIGHT }>
+      
+      <S.Button
+        text="Choose a concept"
+        large="true"
+        rightIcon="caret-down"
+        intent="primary"
+        width={ props.buttonWidth } />
+
     </Popover>
   )
 }
 
 ConceptPicker.propTypes = {
-  onChosen: PropTypes.func
+  onChosen: PropTypes.func,
+  buttonWidth: PropTypes.number
 }
+
+const S = {};
+S.Button = styled(Button)`
+  width: ${props => props.width}px;
+`;
