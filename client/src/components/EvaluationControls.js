@@ -30,8 +30,9 @@ export default function EvaluationControls(props) {
 
   async function handleSubmit() {
     setIsFindingNextEvaluation(true);
-    const resp = await axiosAPI.post('/random', {
-      prevIds: props.newEvaluationObjectIds
+    const resp = await axiosAPI.post('/score', {
+      prevIds: props.newEvaluationObjectIds,
+      scores: [question1Value, question2Value]
     });
     setIsFindingNextEvaluation(false);
 
@@ -40,6 +41,7 @@ export default function EvaluationControls(props) {
     setQuestion2Value(false);
     animateScroll.scrollToTop();
 
+    console.log(props.newEvaluationObjectIds);
     const id = resp && resp.data && resp.data.id;
     if (id) {
       history.push(`/conversation/${id}`, {
@@ -92,8 +94,6 @@ export default function EvaluationControls(props) {
           onClick={ handleSubmit }
           loading={ isFindingNextEvaluation } />
       }
-
-      <S.Spacer />
     </>
   );
 }
@@ -111,7 +111,4 @@ S.Callout = styled(Callout)`
 `;
 S.Button = styled(Button)`
   margin-top: 10px;
-`;
-S.Spacer = styled.div`
-  height: 40px;
 `;

@@ -2,6 +2,7 @@ const axios = require('axios');
 const Chat = require('../models/chat.js');
 const { PROMPTS } = require('../constants/prompts');
 const mongoose = require('mongoose');
+const Score = require('../models/score.js');
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/';
 
@@ -82,8 +83,14 @@ const ChatController = {
 
     try {
       const chat = await Chat.findById(id);
+      const scores = await Score.find({ chat: mongoose.Types.ObjectId(id) });
 
-      res.json(chat);
+      const resp = {
+        chat,
+        scores
+      }
+
+      res.json(resp);
     }
     catch(err) {
       console.log(err);
@@ -91,8 +98,10 @@ const ChatController = {
     }
   },
 
-  random: async (req, res) => {
+  score: async (req, res) => {
     const prevIds = req.body.prevIds;
+    const scores = req.body.scores;
+    const currentId = prevIds.length > 0 && prevIds[0];
 
     const prevObjectIds = prevIds.map(id => mongoose.Types.ObjectId(id));
 
@@ -115,6 +124,18 @@ const ChatController = {
         id: chat && chat._id
       }
 
+      // Add scores to database as applicable
+      if (currentId && scores) {
+        const props = {
+          chat: currentId
+        };
+        if (scores.length >= 1) props.question1 = scores[0]
+        if (scores.length >= 2) props.question2 = scores[1]
+
+        const newScore = new Score(props);
+        await newScore.save();
+      }
+      
       res.json(resp);
     }
     catch(err) {

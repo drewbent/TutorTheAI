@@ -22,7 +22,7 @@ export default function Homepage(props) {
   async function handleEvaluateClick() {
     // TODO(drew): Error handling?
     setIsFindingNextEvaluation(true);
-    const resp = await axiosAPI.post('/random', {
+    const resp = await axiosAPI.post('/score', {
       prevIds: []
     });
     setIsFindingNextEvaluation(false);

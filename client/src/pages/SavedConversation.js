@@ -9,6 +9,7 @@ import { API_URL } from '../constants/axios';
 import logo from '../images/logo.png';
 import { getConceptDisplayName } from '../helpers';
 import EvaluationControls from '../components/EvaluationControls';
+import DisplayScores from '../components/DisplayScores';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -29,6 +30,7 @@ export default function SavedConversation(props) {
   const [messageList, setMessageList] = useState(messageListDefault);
   const [concept, setConcept] = useState(conceptDefault);
   const [time, setTime] = useState(timeDefault);
+  const [scores, setScores] = useState([]);
 
   // URL params
   const { id } = useParams();
@@ -40,18 +42,21 @@ export default function SavedConversation(props) {
       try {        
         const resp = await axiosAPI.get(`/conversation/${id}`);
         const data = resp && resp.data;
+        const chat = data && data.chat;
+        const scores = data && data.scores;
 
-        setTime(data.displayedTimestamp);
+        setTime(chat.displayedTimestamp);
         setConcept({
-          displayName: getConceptDisplayName(data.promptName)
+          displayName: getConceptDisplayName(chat.promptName)
         });
-        setMessageList(data.messages && data.messages.map(msg => ({
+        setMessageList(chat.messages && chat.messages.map(msg => ({
           author: msg.author,
           type: 'text',
           data: {
             text: msg.text
           }
         })));
+        setScores(scores);
         
         setHasFetchedData(true);
       }
@@ -60,7 +65,7 @@ export default function SavedConversation(props) {
         history.push('/');
       }
     }
-    console.log('test');
+
     const missingAllData = (!messageList && !concept && !time);
     if ((hasParams && missingAllData) || id !== currentIdDownloading) {
       // Only fetch from database if all data is missing and params are
@@ -91,7 +96,7 @@ export default function SavedConversation(props) {
   );
   let newEvaluationObjectIds = [];
   if (evaluationObjectIds) {
-    newEvaluationObjectIds = [...evaluationObjectIds, id];
+    newEvaluationObjectIds = [id, ...evaluationObjectIds];
   }
 
   const messageListExtended = [{
@@ -152,6 +157,15 @@ export default function SavedConversation(props) {
             newEvaluationObjectIds={ newEvaluationObjectIds } />
         </S.Centered>
       }
+
+      {!isEvaluating && hasParams &&
+        <S.Centered>
+          <DisplayScores
+            scores={ scores } />
+        </S.Centered>
+      }
+
+      <S.Spacer />
     </>
   );
 }
@@ -195,4 +209,8 @@ S.CardRow = styled.div`
 S.AILogo = styled.img`
   height: 40px;
   margin-right: 5px;
+`;
+S.Spacer = styled.div`
+  height: 40px;
+  flex: 0 0 auto;
 `;
