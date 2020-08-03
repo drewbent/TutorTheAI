@@ -41,7 +41,6 @@ export default function EvaluationControls(props) {
     setQuestion2Value(false);
     animateScroll.scrollToTop();
 
-    console.log(props.newEvaluationObjectIds);
     const id = resp && resp.data && resp.data.id;
     if (id) {
       history.push(`/conversation/${id}`, {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import ConceptPicker from '../components/ConceptPicker';
 import logo from '../images/logo.png';
 import Header from '../components/Header';
@@ -17,6 +17,7 @@ export default function Homepage(props) {
 
   const history = useHistory();
 
+  const [isShowingOverview, setIsShowingOverview] = useState(true);
   const [isFindingNextEvaluation, setIsFindingNextEvaluation] = useState(false);
 
   async function handleEvaluateClick() {
@@ -45,32 +46,52 @@ export default function Homepage(props) {
         
         <S.Buttons>
 
-          <ConceptPicker
-            onChosen={
-              (concept) => history.push('/tutoring', { concept })
-            }
-            buttonWidth={ BUTTON_WIDTH } />
-          
-          <S.Tooltip
-            content={
-              <>
-                <div>
-                  Provide feedback on others' tutoring sessions
-                </div>
-                <div>
-                  (for those who opted in to receive it)
-                </div>
+          {isShowingOverview
+            
+            ? <>
+                <S.Quote>"If you want to master something, teach it." —Richard Feynman</S.Quote>
+                <S.OverviewBullets>
+                  <li>Pick a concept you want to test your mastery on.</li>
+                  <li>Tutor the AI in the concept.</li>
+                  <li><i>(Optional)</i> Let other humans provide feedback on your tutoring.</li>
+                </S.OverviewBullets>
+                <S.Button
+                  text="Start"
+                  large="true"
+                  intent="primary"
+                  width={ BUTTON_WIDTH }
+                  onClick={ () => setIsShowingOverview(false) } />
               </>
-            }
-            position={ Position.RIGHT }
-            usePortal={ false }>
-            <S.Button
-              text="Evaluate Others"
-              large="true"
-              width={ BUTTON_WIDTH }
-              onClick={ handleEvaluateClick }
-              loading={ isFindingNextEvaluation } />
-          </S.Tooltip>
+            
+            : <>
+                <ConceptPicker
+                  onChosen={
+                    (concept) => history.push('/tutoring', { concept })
+                  }
+                  buttonWidth={ BUTTON_WIDTH } />
+                
+                <S.Tooltip
+                  content={
+                    <>
+                      <div>
+                        Provide feedback on others' tutoring sessions
+                      </div>
+                      <div>
+                        (for those who opted in to receive it)
+                      </div>
+                    </>
+                  }
+                  position={ Position.RIGHT }
+                  usePortal={ false }>
+                  <S.Button
+                    text="Evaluate Others"
+                    large="true"
+                    width={ BUTTON_WIDTH }
+                    onClick={ handleEvaluateClick }
+                    loading={ isFindingNextEvaluation } />
+                </S.Tooltip>
+              </>
+          }
 
         </S.Buttons>
 
@@ -100,6 +121,7 @@ S.Body = styled.div`
 S.Buttons = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 200px;
   
   > * {
@@ -111,4 +133,18 @@ S.Tooltip = styled(Tooltip)`
 `;
 S.Button = styled(Button)`
   width: ${props => props.width}px;
+`;
+const overviewStyle = css`
+  font-size: 14px;
+
+  @media(min-width: 600px) {
+    width: 500px;
+    font-size: 16px;
+  }
+`;
+S.Quote = styled.p`
+  ${ overviewStyle }
+`;
+S.OverviewBullets = styled.ol`
+  ${ overviewStyle }
 `;
