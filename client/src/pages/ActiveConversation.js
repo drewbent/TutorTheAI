@@ -40,9 +40,10 @@ export default function ActiveConversation(props) {
   const messagesRemaining = (
     Math.floor(1 + MAX_NUM_OF_USER_MESSAGES - messageList.length / 2)
   );
+  const lastMessageFromAI = (messageList[messageList.length - 1].author === 'them');
 
   useEffect(() => {
-    if (messagesRemaining === 0) {
+    if (messagesRemaining === 0 && lastMessageFromAI) {
       // Completed with messages
       const timer = setTimeout(() => {
         const time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
@@ -56,7 +57,7 @@ export default function ActiveConversation(props) {
 
       return () => clearTimeout(timer);
     }
-  }, [messagesRemaining, concept, history, messageList]);
+  }, [messagesRemaining, lastMessageFromAI, concept, history, messageList]);
 
   if (!concept) {
     return <Redirect to="/" />

@@ -9,7 +9,7 @@ import { API_URL } from '../constants/axios';
 import logo from '../images/logo.png';
 import { getConceptDisplayName } from '../helpers';
 import EvaluationControls from '../components/EvaluationControls';
-import DisplayScores from '../components/DisplayScores';
+import ScoreDisplay from '../components/ScoreDisplay';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -160,7 +160,7 @@ export default function SavedConversation(props) {
 
       {!isEvaluating && hasParams &&
         <S.Centered>
-          <DisplayScores
+          <ScoreDisplay
             scores={ scores } />
         </S.Centered>
       }

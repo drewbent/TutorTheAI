@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import axios from 'axios';
 import React, { useState } from 'react'
-import { RadioGroup, Radio, Callout, Button } from '@blueprintjs/core';
+import { RadioGroup, Callout, Button } from '@blueprintjs/core';
 import styled from 'styled-components';
 import { API_URL } from '../constants/axios';
 import { useHistory } from 'react-router-dom';
 import { animateScroll } from 'react-scroll';
+import { LABELS_MAPPED_TO_SCORES } from '../constants/scores';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -55,6 +56,14 @@ export default function EvaluationControls(props) {
     }
   }
 
+  const radioOptions = (
+    Object.keys(LABELS_MAPPED_TO_SCORES).map((key) => ({
+      value: `${key}`,
+      label: LABELS_MAPPED_TO_SCORES[key],
+      className: "bp3-large"
+    }))
+  );
+
   return (
     <>
       <S.Callout>
@@ -63,12 +72,7 @@ export default function EvaluationControls(props) {
             onChange={ handleQuestion1Change }
             selectedValue={ question1Value }
             inline={ true }
-        >
-            <Radio label="Not really" value="0" className="bp3-large" />
-            <Radio label="Somewhat" value="1" className="bp3-large" />
-            <Radio label="Quite well" value="2" className="bp3-large" />
-            <Radio label="Mastered" value="3" className="bp3-large" />
-        </S.RadioGroup>
+            options={ radioOptions } />
       </S.Callout>
 
       <S.Callout>
@@ -77,12 +81,7 @@ export default function EvaluationControls(props) {
             onChange={ handleQuestion2Change }
             selectedValue={ question2Value }
             inline={ true }
-        >
-            <Radio label="Not really" value="0" className="bp3-large" />
-            <Radio label="Somewhat" value="1" className="bp3-large" />
-            <Radio label="Quite well" value="2" className="bp3-large" />
-            <Radio label="Mastered" value="3" className="bp3-large" />
-        </S.RadioGroup>
+            options={ radioOptions } />
       </S.Callout>
 
       {bothQuestionsAnswered &&
