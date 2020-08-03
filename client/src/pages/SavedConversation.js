@@ -1,4 +1,4 @@
-import { Card, Elevation, Spinner } from '@blueprintjs/core';
+import { Card, Elevation, Spinner, Button } from '@blueprintjs/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Redirect, useParams, useHistory } from 'react-router-dom';
@@ -105,7 +105,12 @@ export default function SavedConversation(props) {
     data: {
       text: `Hi! I'm the AI. Thanks for helping tutor me.`
     }
-  }, ...messageList]
+  }, ...messageList];
+
+  function handleReport() {
+    // Send to Google form.
+    window.open(`https://docs.google.com/forms/d/e/1FAIpQLSdVIQ-UpnuYS3rR5MH-HB5zAf9yiCdQlfBS2e1ckECbBkJZsg/viewform?usp=pp_url&entry.1313298236=${window.location.href}`);
+  }
 
   return (
     <>
@@ -166,6 +171,17 @@ export default function SavedConversation(props) {
       }
 
       <S.Spacer />
+
+      {hasParams &&
+        <S.Right>
+          <S.FlagButton
+            text="Report"
+            icon="flag"
+            intent="warning"
+            onClick={ handleReport }
+            minimal="true" />
+        </S.Right>
+      }
     </>
   );
 }
@@ -182,6 +198,9 @@ S.Subtitle = styled.h3`
 `;
 S.Centered = styled.div`
   text-align: center;
+`;
+S.Right = styled.div`
+  text-align: right;
 `;
 S.CardList = styled.div`
   margin: 50px auto;
@@ -213,4 +232,7 @@ S.AILogo = styled.img`
 S.Spacer = styled.div`
   height: 40px;
   flex: 0 0 auto;
+`;
+S.FlagButton = styled(Button)`
+  margin: 0 10px 10px 0;
 `;

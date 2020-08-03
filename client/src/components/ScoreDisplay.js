@@ -51,13 +51,13 @@ export default function ScoreDisplay(props) {
       <TooltipHeader
         header="Did the AI end up learning the concept?" />
       { MyResponsiveBar(question2) }
-      <S.Spacer />
     </S.Container>
   );
 }
 
 const MyResponsiveBar = (data) => (
-  <ResponsiveBar
+  <S.Chart>
+    <ResponsiveBar
       data={data}
       keys={[ 'count' ]}
       indexBy="rating"
@@ -95,7 +95,8 @@ const MyResponsiveBar = (data) => (
       animate={true}
       motionStiffness={90}
       motionDamping={15}
-  />
+    />
+  </S.Chart>
 );
 
 ScoreDisplay.propTypes = {
@@ -104,7 +105,7 @@ ScoreDisplay.propTypes = {
 
 const S = {};
 S.Container = styled.div`
-  height: 200px;
+
 `;
 S.Heading = styled.h2`
 
@@ -112,4 +113,7 @@ S.Heading = styled.h2`
 S.Spacer = styled.div`
   height: 40px;
   flex: 0 0 auto;
+`;
+S.Chart = styled.div`
+  height: 200px;
 `;
