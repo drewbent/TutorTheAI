@@ -1,5 +1,7 @@
 export const MAX_NUM_OF_USER_MESSAGES = 5;
 
+export const GENERAL_INSTRUCTIONS = 'You are tutoring the AI, who is playing the role of a high schooler learning the concept for the first time. They have general background knowledge on the subject.';
+
 export const CONCEPTS_METADATA = [
   {
     sectionTitle: 'Chemistry'

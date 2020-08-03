@@ -16,6 +16,13 @@ const chatSchema = new mongoose.Schema({
   displayedTimestamp: {
     type: String
   },
+  isSharingPublicly: {
+    type: Boolean
+  },
+  scoreCount: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 });

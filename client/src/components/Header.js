@@ -38,27 +38,29 @@ export default function Header(props) {
           onClose={ () => setIsInfoOpen(false) }
           title="About">
         <S.DialogBody>
-          <p>
-            "If you want to master something, teach it." —Richard Feynman
-          </p>
+          <S.Quote>
+            <i>"If you want to master something, teach it."</i>
+          </S.Quote>
 
           <p>
             But who then is to be the learner? That's where the AI comes in.
           </p>
 
           <p>
-          TutorTheAI provides you with the opportunity to practice the <a href="https://fs.blog/2012/04/feynman-technique/" target="_blank" rel="noopener noreferrer">Feynman Learning Technique</a> through tutoring an AI.
+          <b>Tutor the AI</b> provides you with the opportunity to practice the <a href="https://fs.blog/2012/04/feynman-technique/" target="_blank" rel="noopener noreferrer">Feynman Learning Technique</a> through tutoring an AI.
           </p>
 
-          <ul>
+          <ol>
             <li>Choose something to learn</li>
             <li>Try teaching it to a 6th grader</li>
             <li>Identify your gaps in understanding</li>
             <li>Fill in those gaps</li>
-          </ul>
+          </ol>
 
           <p>
-            Brain icon made by <a href="https://www.flaticon.com/free-icon/brain_749854" title="Skyclick" target="_blank" rel="noopener noreferrer">Skyclick</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a>
+            Website made by <a href="https://www.linkedin.com/in/drewbent/" target="_blank" rel="noopener noreferrer">Drew Bent</a>.<br />
+            AI made by <a href="https://openai.com/blog/openai-api/" target="_blank" rel="noopener noreferrer">OpenAI</a>.<br />
+            Brain icon made by <a href="https://www.flaticon.com/free-icon/brain_749854" title="Skyclick" target="_blank" rel="noopener noreferrer">Skyclick</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a>.
           </p>
         </S.DialogBody>
       </Dialog>
@@ -94,6 +96,9 @@ S.InfoIcon = styled(Icon)`
   cursor: pointer;
 `;
 S.DialogBody = styled.div`
-  padding: 10px;
+  padding: 30px;
   font-size: 16px;
+`;
+S.Quote = styled.p`
+  padding-bottom: 20px;
 `;

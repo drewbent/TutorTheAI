@@ -6,7 +6,7 @@ import logoWhiteBkg from '../images/logo_white_bkg.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
-import { MAX_NUM_OF_USER_MESSAGES } from '../constants/concepts';
+import { MAX_NUM_OF_USER_MESSAGES, GENERAL_INSTRUCTIONS } from '../constants/concepts';
 import { API_URL } from '../constants/axios';
 import moment from 'moment';
 
@@ -40,7 +40,14 @@ export default function ActiveConversation(props) {
   const messagesRemaining = (
     Math.floor(1 + MAX_NUM_OF_USER_MESSAGES - messageList.length / 2)
   );
-  const lastMessageFromAI = (messageList[messageList.length - 1].author === 'them');
+  const lastMessageFromAI = (
+    messageList[messageList.length - 1].author === 'them'
+  );
+
+  let messagesRemainingStr = `${messagesRemaining} messages`;
+  if (messagesRemaining === 1) {
+    messagesRemainingStr = messagesRemainingStr.slice(0, -1);
+  }
 
   useEffect(() => {
     if (messagesRemaining === 0 && lastMessageFromAI) {
@@ -127,7 +134,7 @@ export default function ActiveConversation(props) {
         <S.Title>{ concept.displayName }</S.Title>
 
         <S.Paragraph>
-          You are tutoring the AI, who is playing the role of a high schooler learning the concept for the first time. They have general background knowledge on the subject.
+          { GENERAL_INSTRUCTIONS }
         </S.Paragraph>
 
         <S.Paragraph>
@@ -139,7 +146,7 @@ export default function ActiveConversation(props) {
               </S.Bullet>
             ))}
             <S.Bullet>
-              You have <b>{ messagesRemaining } messages</b> remaining to accomplish this task.
+              You have <b>{ messagesRemainingStr }</b> remaining to accomplish this task.
             </S.Bullet>
           </S.Bullets>
         </S.Paragraph>

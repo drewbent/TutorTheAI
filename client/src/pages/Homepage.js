@@ -49,7 +49,7 @@ export default function Homepage(props) {
           {isShowingOverview
             
             ? <>
-                <S.Quote>"If you want to master something, teach it." —Richard Feynman</S.Quote>
+                <S.Quote><i>"If you want to master something, teach it."</i></S.Quote>
                 <S.OverviewBullets>
                   <li>Pick a concept you want to test your mastery on.</li>
                   <li>Tutor the AI in the concept.</li>
@@ -77,14 +77,14 @@ export default function Homepage(props) {
                         Provide feedback on others' tutoring sessions
                       </div>
                       <div>
-                        (for those who opted in to receive it)
+                        (for those who opted to receive it)
                       </div>
                     </>
                   }
                   position={ Position.RIGHT }
                   usePortal={ false }>
                   <S.Button
-                    text="Evaluate Others"
+                    text="Review Others"
                     large="true"
                     width={ BUTTON_WIDTH }
                     onClick={ handleEvaluateClick }

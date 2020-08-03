@@ -48,6 +48,7 @@ const ChatController = {
     const messageList = req.body.messageList;
     const concept = req.body.concept;
     const time = req.body.time;
+    const isSharingPublicly = req.body.isSharingPublicly;
 
     const promptName = concept.name;
     const prompt = ChatControllerHelper.getPrompt(messageList, promptName);
@@ -61,7 +62,8 @@ const ChatController = {
       promptName,
       prompt,
       messages,
-      displayedTimestamp
+      displayedTimestamp,
+      isSharingPublicly
     }
     try {
       const newChat = new Chat(props);
@@ -111,8 +113,9 @@ const ChatController = {
           $match: {
             _id: {
               $not: { $in: prevObjectIds }
-            }
-          }
+            },
+            isSharingPublicly: true
+          },
         },
         {
           $sample: { size: 1 }
@@ -134,6 +137,11 @@ const ChatController = {
 
         const newScore = new Score(props);
         await newScore.save();
+
+        // Increment score count on Chat object.
+        const chat = await Chat.findById(currentId);
+        chat.scoreCount += 1;
+        await chat.save();
       }
       
       res.json(resp);
