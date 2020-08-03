@@ -27,6 +27,16 @@ export const CONCEPTS_METADATA = [
     sectionTitle: 'Biology'
   },
   {
+    name: 'plant-animal-cells',
+    displayName: 'Plants vs. Animal Cells',
+    humanFirstMessage: null,
+    aiFirstMessage: 'Can you please help me understand the difference between plant and animal cells?',
+    instructions: [
+      `Tutor the AI on the difference between plant and animal cells.`,
+      `Help the AI learn the concept one step at a time. Don't tell it everything at once.`
+    ]
+  },
+  {
     name: 'dna',
     displayName: 'DNA-RNA-Protein',
     humanFirstMessage: `TBD`,

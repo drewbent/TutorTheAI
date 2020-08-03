@@ -1,6 +1,6 @@
 const axios = require('axios');
 const Chat = require('../models/chat.js');
-const { PROMPTS } = require('../constants/prompts');
+const { PROMPTS, BASE_API_PARAMETERS } = require('../constants/prompts');
 const mongoose = require('mongoose');
 const Score = require('../models/score.js');
 
@@ -19,19 +19,15 @@ const ChatController = {
     const promptName = req.body.promptName;
     const messageList = req.body.messageList;
     const prompt = ChatControllerHelper.getPrompt(messageList, promptName);
+    const params = ChatControllerHelper.getAPIParams(promptName);
   
     console.log(prompt);
     console.log('\n\n\n\n');
   
     try {
       const resp = await axiosAPI.post('engines/davinci/completions', {
+        ...params,
         prompt,
-        max_tokens: 150,
-        temperature: 0.9,
-        top_p: 1,
-        n: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0.6,
         stream: false,
         stop: ['\n', 'Tutor:', 'Student:']
       });
@@ -155,7 +151,7 @@ const ChatController = {
 
 const ChatControllerHelper = {
   getPrompt: (messages, promptName) => {
-    const beginningConversation = PROMPTS[promptName];
+    const beginningConversation = PROMPTS[promptName].text;
   
     const formattedMessages = messages.map(msg => {
       const isGPT3 = (msg.author === 'them');
@@ -171,6 +167,13 @@ const ChatControllerHelper = {
       actualConversation +
       startSequence
     );
+  },
+
+  getAPIParams: (promptName) => {
+    return {
+      ...BASE_API_PARAMETERS,
+      ...PROMPTS[promptName].params
+    };
   }
 }
 

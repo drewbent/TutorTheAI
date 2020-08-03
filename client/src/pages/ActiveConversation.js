@@ -28,20 +28,25 @@ export default function ActiveConversation(props) {
 
   const history = useHistory();
 
-  const initialMessage = concept && composeMessage({
-    text: concept.humanFirstMessage,
-    me: true
-  });
+  const initialMessage = (concept && concept.humanFirstMessage &&
+    composeMessage({
+      text: concept.humanFirstMessage,
+      me: true
+    })
+  );
+  const initialMessageList = initialMessage ? [initialMessage] : [];
 
-  const [messageList, setMessageList] = useState([initialMessage]);
+  const [messageList, setMessageList] = useState(initialMessageList);
   const [hasStarted, setHasStarted] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [finishingEarly, setFinishingEarly] = useState(false);
 
-  const messagesRemaining = (
-    Math.floor(1 + MAX_NUM_OF_USER_MESSAGES - messageList.length / 2)
-  );
+  const numUserMessages = messageList.filter(x => x.author === 'me').length;
+  const messagesRemaining = (MAX_NUM_OF_USER_MESSAGES - numUserMessages);
+
   const lastMessageFromAI = (
-    messageList[messageList.length - 1].author === 'them'
+    messageList.length > 0
+    && messageList[messageList.length - 1].author === 'them'
   );
 
   let messagesRemainingStr = `${messagesRemaining} messages`;
@@ -50,7 +55,7 @@ export default function ActiveConversation(props) {
   }
 
   useEffect(() => {
-    if (messagesRemaining === 0 && lastMessageFromAI) {
+    if ((messagesRemaining === 0 && lastMessageFromAI) || finishingEarly) {
       // Completed with messages
       const timer = setTimeout(() => {
         const time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
@@ -60,22 +65,29 @@ export default function ActiveConversation(props) {
           concept: concept,
           time: time
         });
-      }, 1800);
+      }, finishingEarly ? 0 : 1800);
 
       return () => clearTimeout(timer);
     }
-  }, [messagesRemaining, lastMessageFromAI, concept, history, messageList]);
+  }, [
+    messagesRemaining, lastMessageFromAI, concept, history, messageList,
+    finishingEarly
+  ]);
 
   if (!concept) {
     return <Redirect to="/" />
   }
 
-  async function start() {
+  function start() {
     setHasStarted(true);
 
     const newMessage = concept && concept.aiFirstMessage;
     handleGPT3Message(newMessage);
     setIsChatOpen(true);
+  }
+
+  async function finishEarly() {
+    setFinishingEarly(true);
   }
 
   async function handleUserMessage(message) {
@@ -152,12 +164,12 @@ export default function ActiveConversation(props) {
         </S.Paragraph>
 
         <S.ActionButton
-            onClick={ start }
+            onClick={ hasStarted ? finishEarly : start }
             large={ true }
             icon={ 'learning' }
-            intent={ 'success' }
-            disabled={ hasStarted }>
-          Let's go!
+            intent={ hasStarted ? 'primary' : 'success' }
+            outlined={ hasStarted ? true : false }>
+          {hasStarted ? `Finish early` : `Let's go!` }
         </S.ActionButton>
       </S.Body>
 
