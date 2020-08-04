@@ -3,7 +3,7 @@ import React from 'react'
 import { ResponsiveBar } from '@nivo/bar';
 import styled from 'styled-components';
 import {
-  MIN_SCORES_TO_DISPLAY, LABELS_MAPPED_TO_SCORES
+  MIN_SCORES_TO_DISPLAY, LABELS_MAPPED_TO_SCORES, SCORE_PROMPTS
 } from '../constants/scores';
 import { Tooltip, Position } from '@blueprintjs/core';
 import _ from 'lodash';
@@ -46,10 +46,10 @@ export default function ScoreDisplay(props) {
   return (
     <S.Container>
       <TooltipHeader
-        header="Did the human understand the concept they were teaching?" />
+        header={ SCORE_PROMPTS[0] } />
       { MyResponsiveBar(question1) }
       <TooltipHeader
-        header="Did the AI end up learning the concept?" />
+        header={ SCORE_PROMPTS[1] } />
       { MyResponsiveBar(question2) }
     </S.Container>
   );

@@ -6,3 +6,8 @@ export const LABELS_MAPPED_TO_SCORES = {
   2: 'Quite well',
   3: 'Mastered'
 }
+
+export const SCORE_PROMPTS = [
+  'Did the human understand the concept they were teaching?',
+  'Did the AI end up learning the concept?'
+]

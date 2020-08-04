@@ -6,7 +6,11 @@ import logoWhiteBkg from '../images/logo_white_bkg.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
-import { MAX_NUM_OF_USER_MESSAGES, GENERAL_INSTRUCTIONS } from '../constants/concepts';
+import {
+  MAX_NUM_OF_USER_MESSAGES,
+  GENERAL_INSTRUCTIONS_OVERVIEW,
+  GENERAL_INSTRUCTIONS
+} from '../constants/concepts';
 import { API_URL } from '../constants/axios';
 import moment from 'moment';
 
@@ -53,6 +57,10 @@ export default function ActiveConversation(props) {
   if (messagesRemaining === 1) {
     messagesRemainingStr = messagesRemainingStr.slice(0, -1);
   }
+
+  const conceptInstructions = [
+    ...concept.instructions, ...GENERAL_INSTRUCTIONS
+  ];
 
   useEffect(() => {
     if ((messagesRemaining === 0 && lastMessageFromAI) || finishingEarly) {
@@ -146,13 +154,13 @@ export default function ActiveConversation(props) {
         <S.Title>{ concept.displayName }</S.Title>
 
         <S.Paragraph>
-          { GENERAL_INSTRUCTIONS }
+          { GENERAL_INSTRUCTIONS_OVERVIEW }
         </S.Paragraph>
 
         <S.Paragraph>
           Your instructions:
           <S.Bullets>
-            {concept.instructions.map((instruction, i) => (
+            {conceptInstructions.map((instruction, i) => (
               <S.Bullet key={i}>
                 { instruction }
               </S.Bullet>
@@ -166,7 +174,7 @@ export default function ActiveConversation(props) {
         <S.ActionButton
             onClick={ hasStarted ? finishEarly : start }
             large={ true }
-            icon={ 'learning' }
+            icon={ hasStarted ? 'stop' : 'learning' }
             intent={ hasStarted ? 'primary' : 'success' }
             outlined={ hasStarted ? true : false }>
           {hasStarted ? `Finish early` : `Let's go!` }

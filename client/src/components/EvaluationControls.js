@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { API_URL } from '../constants/axios';
 import { useHistory } from 'react-router-dom';
 import { animateScroll } from 'react-scroll';
-import { LABELS_MAPPED_TO_SCORES } from '../constants/scores';
+import { LABELS_MAPPED_TO_SCORES, SCORE_PROMPTS } from '../constants/scores';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -68,7 +68,7 @@ export default function EvaluationControls(props) {
     <>
       <S.Callout>
         <S.RadioGroup
-            label="Did the human understand the concept they were teaching?"
+            label={ SCORE_PROMPTS[0] }
             onChange={ handleQuestion1Change }
             selectedValue={ question1Value }
             inline={ true }
@@ -77,7 +77,7 @@ export default function EvaluationControls(props) {
 
       <S.Callout>
         <S.RadioGroup
-            label="Did the AI end up learning the concept?"
+            label={ SCORE_PROMPTS[1] }
             onChange={ handleQuestion2Change }
             selectedValue={ question2Value }
             inline={ true }
@@ -103,6 +103,7 @@ EvaluationControls.propTypes = {
 const S = {};
 S.RadioGroup = styled(RadioGroup)`
   font-weight: 600;
+  font-size: 18px;
 `;
 S.Callout = styled(Callout)`
   margin-top: 10px;

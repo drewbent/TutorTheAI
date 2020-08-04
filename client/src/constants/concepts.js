@@ -1,28 +1,34 @@
-export const MAX_NUM_OF_USER_MESSAGES = 5;
+export const MAX_NUM_OF_USER_MESSAGES = 12;
 
-export const GENERAL_INSTRUCTIONS = 'You are tutoring the AI, who is playing the role of a high schooler learning the concept for the first time. They have general background knowledge on the subject.';
+export const GENERAL_INSTRUCTIONS_OVERVIEW = 'You are tutoring the AI, who is playing the role of a high schooler learning the concept for the first time. They have general background knowledge on the subject.';
+export const GENERAL_INSTRUCTIONS = [
+  `Help the AI learn the concept one step at a time. Don't tell it everything at once.`,
+  `Make sure to guide the AI along and keep it on track.`
+]
 
 export const CONCEPTS_METADATA = [
   {
     sectionTitle: 'Chemistry'
   },
   {
-    name: 'hybridization',
-    displayName: 'Hybridization',
-    humanFirstMessage: `Let's look at ethene and try to understand its hybridization. Do you remember the chemical formula for ethene?`,
-    aiFirstMessage: 'C2H4.',
+    name: 'atoms',
+    displayName: 'Atoms',
+    humanFirstMessage: null,
+    aiFirstMessage: 'Can you please help me understand what an atom is?',
     instructions: [
-      `Tutor the AI why orbitals hybridize, and particularly, how ethene’s sp^2 hybridization works.`,
-      `Help the AI learn the concept through careful probing. Don’t just tell it everything.`
+      `Tutor the AI on what atoms are, including what they consist of and how they compose molecules.`
     ]
   },
   {
-    name: 'periodic',
-    displayName: 'Periodic Table',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
+    name: 'hybridization',
+    displayName: 'Hybridization (sp^3)',
+    humanFirstMessage: null,
+    aiFirstMessage: 'How does sp^3 hybridization help us understand how carbon bonds?',
+    instructions: [
+      `Tutor the AI on why sp^3 hybridization is crucial for understanding carbon bonding.`
+    ]
   },
+
   {
     sectionTitle: 'Biology'
   },
@@ -32,46 +38,29 @@ export const CONCEPTS_METADATA = [
     humanFirstMessage: null,
     aiFirstMessage: 'Can you please help me understand the difference between plant and animal cells?',
     instructions: [
-      `Tutor the AI on the difference between plant and animal cells.`,
-      `Help the AI learn the concept one step at a time. Don't tell it everything at once.`
+      `Tutor the AI on the difference between plant and animal cells.`
     ]
   },
   {
-    name: 'dna',
+    name: 'central-dogma',
     displayName: 'DNA-RNA-Protein',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
+    humanFirstMessage: null,
+    aiFirstMessage: 'Can you please help me understand the central dogma of molecular biology?',
+    instructions: [
+      `Tutor the AI on how the central dogma explains how DNA -> RNA -> protein.`
+    ]
   },
-  {
-    name: 'crispr',
-    displayName: 'CRISPR',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
-  },
-  {
-    name: 'immunology',
-    displayName: 'Immunology',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
-  },
+
   {
     sectionTitle: 'Physics'
   },
   {
-    name: 'conservation',
-    displayName: 'Conservation of energy',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
-  },
-  {
-    name: 'qm',
-    displayName: 'Quantum mechanics',
-    humanFirstMessage: `TBD`,
-    aiFirstMessage: 'TBD',
-    instructions: []
+    name: 'superposition',
+    displayName: 'Quantum mechanics (superposition)',
+    humanFirstMessage: null,
+    aiFirstMessage: 'Can you please help me understand superposition in quantum mechanics?',
+    instructions: [
+      `Tutor the AI on how superposition works in quantum mechanics.`
+    ]
   },
 ]

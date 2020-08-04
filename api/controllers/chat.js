@@ -28,8 +28,7 @@ const ChatController = {
       const resp = await axiosAPI.post('engines/davinci/completions', {
         ...params,
         prompt,
-        stream: false,
-        stop: ['\n', 'Tutor:', 'Student:']
+        stream: false
       });
   
       res.json(resp.data);
