@@ -3,12 +3,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CONCEPTS_METADATA } from '../constants/concepts';
 import styled from 'styled-components';
+import { GA } from '../services/GA';
 
 export default function ConceptPicker(props) {
   const { onChosen } = props;
   
   function handleMenuItemClick(concept) {
     onChosen(concept);
+
+    GA.event({
+      category: 'Conversation',
+      action: 'Choose concept',
+      label: concept.name
+    });
   }
 
   function handleRequestConcept() {

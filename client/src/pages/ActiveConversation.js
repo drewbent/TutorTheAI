@@ -17,6 +17,7 @@ import moment from 'moment';
 import ReCAPTCHA from "react-google-recaptcha";
 import { RECAPTCHA__SITE_KEY } from '../constants/recaptcha';
 import { AppToaster } from '../components/AppToaster';
+import { GA } from '../services/GA';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -78,6 +79,13 @@ export default function ActiveConversation(props) {
         });
       }, finishingEarly ? 0 : 1800);
 
+      if (!finishingEarly) {
+        GA.event({
+          category: 'Conversation',
+          action: 'Finish conversation at limit'
+        });
+      }
+
       return () => clearTimeout(timer);
     }
   }, [
@@ -103,6 +111,12 @@ export default function ActiveConversation(props) {
 
   async function finishEarly() {
     setFinishingEarly(true);
+
+    GA.event({
+      category: 'Conversation',
+      action: 'Finish conversation early',
+      value: messagesRemaining
+    });
   }
 
   async function handleUserMessage(message) {
@@ -120,6 +134,11 @@ export default function ActiveConversation(props) {
 
     const newMessageList = [...messageList, message];
     setMessageList(newMessageList);
+
+    GA.event({
+      category: 'Conversation',
+      action: 'Send message to AI'
+    });
 
     try {
       const resp = await axiosAPI.post('/completion', {

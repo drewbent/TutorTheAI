@@ -7,6 +7,7 @@ import logo from '../images/logo.png';
 import Header from '../components/Header';
 import { Button, Tooltip, Position } from '@blueprintjs/core';
 import { API_URL } from '../constants/axios';
+import { GA } from '../services/GA';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -20,6 +21,15 @@ export default function Homepage(props) {
   const [isShowingOverview, setIsShowingOverview] = useState(true);
   const [isFindingNextEvaluation, setIsFindingNextEvaluation] = useState(false);
 
+  function handleStart() {
+    setIsShowingOverview(false);
+
+    GA.event({
+      category: 'Meta',
+      action: 'Click start on homepage'
+    });
+  }
+
   async function handleEvaluateClick() {
     // TODO(drew): Error handling?
     setIsFindingNextEvaluation(true);
@@ -27,6 +37,11 @@ export default function Homepage(props) {
       prevIds: []
     });
     setIsFindingNextEvaluation(false);
+
+    GA.event({
+      category: 'Evaluation',
+      action: 'Begin evaluations'
+    });
 
     const id = resp && resp.data && resp.data.id;
     history.push(`/conversation/${id}`, {
@@ -60,7 +75,7 @@ export default function Homepage(props) {
                   large="true"
                   intent="primary"
                   width={ BUTTON_WIDTH }
-                  onClick={ () => setIsShowingOverview(false) } />
+                  onClick={ handleStart } />
               </>
             
             : <>

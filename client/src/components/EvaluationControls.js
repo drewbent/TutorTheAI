@@ -7,6 +7,7 @@ import { API_URL } from '../constants/axios';
 import { useHistory } from 'react-router-dom';
 import { animateScroll } from 'react-scroll';
 import { LABELS_MAPPED_TO_SCORES, SCORE_PROMPTS } from '../constants/scores';
+import { GA } from '../services/GA';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -41,6 +42,11 @@ export default function EvaluationControls(props) {
     setQuestion1Value(false);
     setQuestion2Value(false);
     animateScroll.scrollToTop();
+
+    GA.event({
+      category: 'Evaluation',
+      action: 'Rate conversation'
+    });
 
     const id = resp && resp.data && resp.data.id;
     if (id) {

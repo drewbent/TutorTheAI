@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { API_URL } from '../constants/axios';
 import { AppToaster } from './AppToaster';
 import styled from 'styled-components';
+import { GA } from '../services/GA';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -34,6 +35,11 @@ export default function SaveSessionButton(props) {
     AppToaster.show({
       message: 'You can now share the current URL with others!',
       intent: 'success'
+    });
+
+    GA.event({
+      category: 'Conversation',
+      action: 'Save conversation'
     });
   }
 

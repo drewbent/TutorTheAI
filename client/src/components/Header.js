@@ -4,6 +4,7 @@ import logo from '../images/logo.png';
 import { Icon, Dialog } from '@blueprintjs/core';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
+import { GA } from '../services/GA';
 
 export default function Header(props) {
   const { noLogo } = props;
@@ -13,10 +14,20 @@ export default function Header(props) {
 
   function handleInfoClick() {
     setIsInfoOpen(true);
+
+    GA.event({
+      category: 'Meta',
+      action: 'Open info modal'
+    });
   }
 
   function handleEmail() {
     setIsEmailOpen(true);
+
+    GA.event({
+      category: 'Meta',
+      action: 'Open contact modal'
+    });
   }
 
   return (
@@ -114,6 +125,7 @@ S.Link = styled(Link)`
   }
 `;
 S.Header = styled.div`
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
   align-items: center;
