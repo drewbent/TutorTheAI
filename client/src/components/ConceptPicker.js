@@ -10,11 +10,16 @@ export default function ConceptPicker(props) {
   function handleMenuItemClick(concept) {
     onChosen(concept);
   }
+
+  function handleRequestConcept() {
+    window.open('https://forms.gle/dDDcMnXqxCmdBfVp8');
+  }
   
   return (
     <Popover
       content={
         <Menu>
+          
           {CONCEPTS_METADATA.map((concept, i) => (
             concept.sectionTitle
               ? <Menu.Divider
@@ -25,6 +30,13 @@ export default function ConceptPicker(props) {
                   onClick={ () => handleMenuItemClick(concept) }
                   key={ i } />
           ))}
+
+          <Menu.Divider
+            title="Coming soon" />
+          <Menu.Item
+            text="Request a concept!"
+            intent="success"
+            onClick={ () => handleRequestConcept() } />
         </Menu>
       }
       position={ Position.RIGHT }>
