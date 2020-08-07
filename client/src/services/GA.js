@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga';
 
-const LOGGING = true;
+const LOGGING = false;
 
 export const GA = {
   init() {

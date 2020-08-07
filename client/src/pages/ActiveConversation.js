@@ -5,7 +5,7 @@ import { Launcher } from 'react-chat-window';
 import logoWhiteBkg from '../images/logo_white_bkg.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
-import { Button } from '@blueprintjs/core';
+import { Button, Spinner } from '@blueprintjs/core';
 import {
   MAX_NUM_OF_USER_MESSAGES,
   GENERAL_INSTRUCTIONS_OVERVIEW,
@@ -50,6 +50,7 @@ export default function ActiveConversation(props) {
   const [captchaValue, setCaptchaValue] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [finishingEarly, setFinishingEarly] = useState(false);
+  const [waitingForAI, setWaitingForAI] = useState(false);
 
   const hasCompletedCaptcha = !!captchaValue;
 
@@ -141,6 +142,8 @@ export default function ActiveConversation(props) {
     });
 
     try {
+      setWaitingForAI(true);
+
       const resp = await axiosAPI.post('/completion', {
         messageList: newMessageList,
         promptName: concept.name,
@@ -148,6 +151,8 @@ export default function ActiveConversation(props) {
       }, {
         withCredentials: true
       });
+
+      setWaitingForAI(false);
 
       const respText = resp && resp.data && resp.data.text;
       const isToxic = resp && resp.data && resp.data.isToxic;
@@ -231,6 +236,10 @@ export default function ActiveConversation(props) {
             outlined={ hasStarted ? true : false }>
           {hasStarted ? `Finish early` : `Let's go!` }
         </S.ActionButton>
+
+        {waitingForAI &&
+          <S.Spinner size={ 30 } />
+        }
       </S.Body>
 
       {hasCompletedCaptcha &&
@@ -273,4 +282,8 @@ S.Bullet = styled.li`
 `;
 S.ActionButton = styled(Button)`
   margin-top: 15px;
+`;
+S.Spinner = styled(Spinner)`
+  justify-content: left;
+  margin-top: 20px;
 `;
