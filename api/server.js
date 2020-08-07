@@ -6,6 +6,7 @@ const apiRouter = require('./routers/api.js');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 const port = 5000;
@@ -20,6 +21,17 @@ const connection = mongoose.connection;
 connection.once('open', () => {
   console.log('MongoDB database connction established successfully');
 });
+
+// Because of https://www.npmjs.com/package/express-rate-limit
+// TODO(drew): Make sure this works on AWS eb
+app.set('trust proxy', 1);
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000 // limit each IP to X requests per windowMs
+});
+app.use(limiter);
 
 app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection }),

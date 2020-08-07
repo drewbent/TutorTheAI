@@ -9,9 +9,14 @@ export default function Header(props) {
   const { noLogo } = props;
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
 
   function handleInfoClick() {
     setIsInfoOpen(true);
+  }
+
+  function handleEmail() {
+    setIsEmailOpen(true);
   }
 
   return (
@@ -24,17 +29,23 @@ export default function Header(props) {
           </>
         }
         
+        <S.EmailIcon icon="envelope" iconSize={ 20 } onClick={ handleEmail } />
         <S.InfoIcon icon="info-sign" iconSize={ 20 } onClick={ handleInfoClick } />
       </S.Header>
 
-      <Dialog
+      <MyDialog
+          icon="envelope"
+          isOpen={ isEmailOpen }
+          onClose={ () => setIsEmailOpen(false) }
+          title="Contact">
+        <S.DialogBody>
+          Questions or feedback? Please contact <a href="mailto:dbent@stanford.edu">Drew</a>.
+        </S.DialogBody>
+      </MyDialog>
+
+      <MyDialog
           icon="info-sign"
           isOpen={ isInfoOpen }
-          autoFocus="true"
-          canEscapeKeyClose="true"
-          canOutsideClickClose="true"
-          enforceFocus="true"
-          usePort="true"
           onClose={ () => setIsInfoOpen(false) }
           title="About">
         <S.DialogBody>
@@ -57,15 +68,38 @@ export default function Header(props) {
             <li>Fill in those gaps</li>
           </ol>
 
-          <p>
+          <S.Warning>
+            Note: OpenAI is an experimental AI and, despite precautions, may still generate hateful or inaccurate messages. We take this seriously and encourage you to report any such cases. 
+          </S.Warning>
+
+          <S.Credits>
             Website made by <a href="https://www.linkedin.com/in/drewbent/" target="_blank" rel="noopener noreferrer">Drew Bent</a>.<br />
             AI made by <a href="https://openai.com/blog/openai-api/" target="_blank" rel="noopener noreferrer">OpenAI</a>.<br />
             Brain icon made by <a href="https://www.flaticon.com/free-icon/brain_749854" title="Skyclick" target="_blank" rel="noopener noreferrer">Skyclick</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a>.
-          </p>
+          </S.Credits>
+
         </S.DialogBody>
-      </Dialog>
+      </MyDialog>
     </>
   );
+}
+
+function MyDialog(props) {
+  const { children, ...rest } = props;
+
+  return (
+    <Dialog
+        autoFocus="true"
+        canEscapeKeyClose="true"
+        canOutsideClickClose="true"
+        enforceFocus="true"
+        usePort="true"
+        {...rest}>
+
+      { children }
+
+    </Dialog>
+  )
 }
 
 Header.propTypes = {
@@ -91,8 +125,12 @@ S.Header = styled.div`
     margin-right: 5px;
   }
 `;
-S.InfoIcon = styled(Icon)`
+S.EmailIcon = styled(Icon)`
   margin-left: auto;
+  cursor: pointer;
+`;
+S.InfoIcon = styled(Icon)`
+  margin-left: 5px;
   cursor: pointer;
 `;
 S.DialogBody = styled.div`
@@ -101,4 +139,17 @@ S.DialogBody = styled.div`
 `;
 S.Quote = styled.p`
   padding-bottom: 20px;
+`;
+S.Warning = styled.p`
+  border-top: 1px solid #8A9BA8;
+  padding-top: 10px;
+  margin-top: 40px;
+  color: #A67908;
+`;
+S.Credits = styled.p`
+  color: #8A9BA8;
+
+  a {
+    color: #5C7080;
+  }
 `;
