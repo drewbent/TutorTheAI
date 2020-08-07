@@ -1,14 +1,15 @@
 const axios = require('axios');
+const { RECAPTCHA_VERIFY_URL } = require('../constants/recaptcha');
 const Chat = require('../models/chat.js');
 const {
   PROMPTS, BASE_API_PARAMETERS, BASE_CONTENT_FILTER_PARAMETERS
 } = require('../constants/prompts');
 const mongoose = require('mongoose');
 const Score = require('../models/score.js');
-
-const OPENAI_API_URL = 'https://api.openai.com/v1/';
-
-const axiosAPI = axios.create({
+const {
+  OPENAI_API_URL, DA_VINCI_PATH, CONTENT_FILTER_PATH
+} = require('../constants/openai');
+const axiosOpenAI = axios.create({
   baseURL: OPENAI_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -18,16 +19,29 @@ const axiosAPI = axios.create({
 
 const ChatController = {
   completion: async (req, res) => {
-    const promptName = req.body.promptName;
-    const messageList = req.body.messageList;
+    const {
+      promptName,
+      messageList,
+      captchaValue
+    } = req.body;
+
+    const isVerified = await ChatControllerHelper.verifyCaptcha(
+      captchaValue,
+      req
+    );
+    if (!isVerified) {
+      console.log('Invalid captcha');
+      return res.status(401).json('Invalid captcha');
+    }
+
     const prompt = ChatControllerHelper.getPrompt(messageList, promptName);
     const params = ChatControllerHelper.getAPIParams(promptName);
   
-    console.log(prompt);
-    console.log('\n\n\n\n');
+    //console.log(prompt);
+    //console.log('\n\n\n\n');
   
     try {
-      const resp = await axiosAPI.post('engines/davinci/completions', {
+      const resp = await axiosOpenAI.post('engines/davinci/completions', {
         ...params,
         prompt,
         stream: false
@@ -39,8 +53,7 @@ const ChatController = {
           choices[0].text.trim()
       );
 
-      //const isToxic = await ChatControllerHelper.isToxic(respText);
-      const isToxic = false;
+      const isToxic = await ChatControllerHelper.isToxic(respText);
   
       res.json({
         text: !isToxic ? respText : '',
@@ -190,9 +203,9 @@ const ChatControllerHelper = {
   },
 
   isToxic: async (textToFilter) => {
-    const prompt = `<|endoftext|>${textToFilter}\n--\nLabel: `;
+    const prompt = `<|endoftext|>${textToFilter}\n--\nLabel:`;
 
-    const resp = await axiosAPI.post('engines/davinci/completions', {
+    const resp = await axiosOpenAI.post(CONTENT_FILTER_PATH, {
       ...BASE_CONTENT_FILTER_PARAMETERS,
       prompt,
       stream: false
@@ -203,10 +216,29 @@ const ChatControllerHelper = {
     const text = firstChoice && firstChoice.text;
     const logprobs = firstChoice && firstChoice.logprobs;
 
-    //console.log(text);
-    //console.log(logprobs.top_logprobs);
+    console.log(logprobs.top_logprobs);
 
     return (text === '2');
+  },
+
+  verifyCaptcha: async (captchaValue, req) => {
+    if (req.session.captchaStatus) {
+      // No need to use Captcha; already stored in session
+      return (req.session.captchaStatus === 'verified');
+    }
+
+    // https://developers.google.com/recaptcha/docs/verify
+    const secret = process.env.RECAPTCHA_SECRET;
+    const response = captchaValue;
+    const url = `${RECAPTCHA_VERIFY_URL}?secret=${secret}&response=${response}`
+    
+    const resp = await axios.post(url);
+
+    const isSuccess = resp && resp.data && resp.data.success;
+
+    req.session.captchaStatus = isSuccess ? 'verified' : '';
+
+    return isSuccess;
   }
 }
 

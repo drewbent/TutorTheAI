@@ -14,6 +14,9 @@ import {
 } from '../constants/concepts';
 import { API_URL } from '../constants/axios';
 import moment from 'moment';
+import ReCAPTCHA from "react-google-recaptcha";
+import { RECAPTCHA__SITE_KEY } from '../constants/recaptcha';
+import { AppToaster } from '../components/AppToaster';
 
 const axiosAPI = axios.create({
   baseURL: API_URL
@@ -43,8 +46,11 @@ export default function ActiveConversation(props) {
 
   const [messageList, setMessageList] = useState(initialMessageList);
   const [hasStarted, setHasStarted] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [finishingEarly, setFinishingEarly] = useState(false);
+
+  const hasCompletedCaptcha = !!captchaValue;
 
   const numUserMessages = messageList.filter(x => x.author === 'me').length;
   const messagesRemaining = (MAX_NUM_OF_USER_MESSAGES - numUserMessages);
@@ -58,10 +64,6 @@ export default function ActiveConversation(props) {
   if (messagesRemaining === 1) {
     messagesRemainingStr = messagesRemainingStr.slice(0, -1);
   }
-
-  const conceptInstructions = [
-    ...concept.instructions, ...GENERAL_INSTRUCTIONS
-  ];
 
   useEffect(() => {
     if ((messagesRemaining === 0 && lastMessageFromAI) || finishingEarly) {
@@ -86,6 +88,10 @@ export default function ActiveConversation(props) {
   if (!concept) {
     return <Redirect to="/" />
   }
+
+  const conceptInstructions = [
+    ...concept.instructions, ...GENERAL_INSTRUCTIONS
+  ];
 
   function start() {
     setHasStarted(true);
@@ -115,17 +121,30 @@ export default function ActiveConversation(props) {
     const newMessageList = [...messageList, message];
     setMessageList(newMessageList);
 
-    const resp = await axiosAPI.post('/completion', {
-      messageList: newMessageList,
-      promptName: concept.name
-    });
+    try {
+      const resp = await axiosAPI.post('/completion', {
+        messageList: newMessageList,
+        promptName: concept.name,
+        captchaValue
+      }, {
+        withCredentials: true
+      });
 
-    const respText = resp && resp.data && resp.data.text;
-    const isToxic = resp && resp.data && resp.data.isToxic;
-    if (!isToxic) {
-      handleGPT3Message(respText);
-    } else {
-      handleGPT3Message(IS_TOXIC_REPLY);
+      const respText = resp && resp.data && resp.data.text;
+      const isToxic = resp && resp.data && resp.data.isToxic;
+      if (!isToxic) {
+        handleGPT3Message(respText);
+      } else {
+        handleGPT3Message(IS_TOXIC_REPLY);
+      }
+    }
+    catch(err) {
+      if (err.response && err.response.status === 401) {
+        AppToaster.show({
+          message: 'Timed out. Please reload the page.',
+          intent: 'danger'
+        });
+      }
     }
   }
 
@@ -146,6 +165,10 @@ export default function ActiveConversation(props) {
     }
 
     setIsChatOpen(!isChatOpen);
+  }
+
+  function onCaptchaChange(value) {
+    setCaptchaValue(value);
   }
   
   return (
@@ -173,8 +196,16 @@ export default function ActiveConversation(props) {
           </S.Bullets>
         </S.Paragraph>
 
+        {!hasStarted &&
+          <ReCAPTCHA
+            sitekey={ RECAPTCHA__SITE_KEY }
+            onChange={ onCaptchaChange }
+          />
+        }
+
         <S.ActionButton
             onClick={ hasStarted ? finishEarly : start }
+            disabled={ !hasCompletedCaptcha }
             large={ true }
             icon={ hasStarted ? 'stop' : 'learning' }
             intent={ hasStarted ? 'primary' : 'success' }
@@ -183,15 +214,17 @@ export default function ActiveConversation(props) {
         </S.ActionButton>
       </S.Body>
 
-      <Launcher
-        agentProfile={{
-          teamName: 'Tutor the AI',
-          imageUrl: logoWhiteBkg
-        }}
-        onMessageWasSent={ handleUserMessage }
-        handleClick={ handleLauncherClick }
-        messageList={ messageList }
-        isOpen={ isChatOpen } />
+      {hasCompletedCaptcha &&
+        <Launcher
+          agentProfile={{
+            teamName: 'Tutor the AI',
+            imageUrl: logoWhiteBkg
+          }}
+          onMessageWasSent={ handleUserMessage }
+          handleClick={ handleLauncherClick }
+          messageList={ messageList }
+          isOpen={ isChatOpen } />
+      }
     </>
   );
 }

@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const apiRouter = require('./routers/api.js');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 const port = 5000;
@@ -19,7 +21,24 @@ connection.once('open', () => {
   console.log('MongoDB database connction established successfully');
 });
 
-app.use(cors());
+app.use(session({
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 20*60*1000 // 20 mins
+  }
+}));
+
+app.use(cors({
+  origin:[
+    'http://localhost:3000',
+    'https://tutortheai.com',
+    'http://tutortheai.com'],
+  methods:['GET','POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api/v1', apiRouter);
