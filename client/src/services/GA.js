@@ -4,7 +4,7 @@ const LOGGING = true;
 
 export const GA = {
   init() {
-    ReactGA.initialize('UA-164057049-2');
+    ReactGA.initialize('UA-174909627-1');
   },
 
   pageView(page) {
