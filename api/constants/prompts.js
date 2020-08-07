@@ -10,6 +10,13 @@ exports.BASE_API_PARAMETERS = {
   stop: ['\n', 'Tutor:', 'Student:']
 }
 
+exports.BASE_CONTENT_FILTER_PARAMETERS = {
+  temperature: 0.0,
+  top_p: 0,
+  max_tokens: 1,
+  logprobs: 3
+}
+
 exports.PROMPTS = {
   'hybridization': {
     text: dedent`

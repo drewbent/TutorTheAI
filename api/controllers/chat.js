@@ -1,6 +1,8 @@
 const axios = require('axios');
 const Chat = require('../models/chat.js');
-const { PROMPTS, BASE_API_PARAMETERS } = require('../constants/prompts');
+const {
+  PROMPTS, BASE_API_PARAMETERS, BASE_CONTENT_FILTER_PARAMETERS
+} = require('../constants/prompts');
 const mongoose = require('mongoose');
 const Score = require('../models/score.js');
 
@@ -30,8 +32,20 @@ const ChatController = {
         prompt,
         stream: false
       });
+
+      const choices = resp && resp.data && resp.data.choices;
+      const respText = (
+        choices && choices.length >= 1 && choices[0] && choices[0].text &&
+          choices[0].text.trim()
+      );
+
+      //const isToxic = await ChatControllerHelper.isToxic(respText);
+      const isToxic = false;
   
-      res.json(resp.data);
+      res.json({
+        text: !isToxic ? respText : '',
+        isToxic
+      });
     }
     catch(err) {
       console.log(err);
@@ -173,6 +187,26 @@ const ChatControllerHelper = {
       ...BASE_API_PARAMETERS,
       ...PROMPTS[promptName].params
     };
+  },
+
+  isToxic: async (textToFilter) => {
+    const prompt = `<|endoftext|>${textToFilter}\n--\nLabel: `;
+
+    const resp = await axiosAPI.post('engines/davinci/completions', {
+      ...BASE_CONTENT_FILTER_PARAMETERS,
+      prompt,
+      stream: false
+    });
+
+    const choices = resp && resp.data && resp.data.choices;
+    const firstChoice = choices && choices.length >= 1 && choices[0];
+    const text = firstChoice && firstChoice.text;
+    const logprobs = firstChoice && firstChoice.logprobs;
+
+    //console.log(text);
+    //console.log(logprobs.top_logprobs);
+
+    return (text === '2');
   }
 }
 

@@ -9,7 +9,8 @@ import { Button } from '@blueprintjs/core';
 import {
   MAX_NUM_OF_USER_MESSAGES,
   GENERAL_INSTRUCTIONS_OVERVIEW,
-  GENERAL_INSTRUCTIONS
+  GENERAL_INSTRUCTIONS,
+  IS_TOXIC_REPLY
 } from '../constants/concepts';
 import { API_URL } from '../constants/axios';
 import moment from 'moment';
@@ -119,12 +120,13 @@ export default function ActiveConversation(props) {
       promptName: concept.name
     });
 
-    const choices = resp && resp.data && resp.data.choices;
-    const respText = (
-      choices && choices.length >= 1 && choices[0] && choices[0].text &&
-        choices[0].text.trim()
-    );
-    handleGPT3Message(respText);
+    const respText = resp && resp.data && resp.data.text;
+    const isToxic = resp && resp.data && resp.data.isToxic;
+    if (!isToxic) {
+      handleGPT3Message(respText);
+    } else {
+      handleGPT3Message(IS_TOXIC_REPLY);
+    }
   }
 
   async function handleGPT3Message(messageText) {

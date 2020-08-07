@@ -4,7 +4,9 @@ export const GENERAL_INSTRUCTIONS_OVERVIEW = 'You are tutoring the AI, who is pl
 export const GENERAL_INSTRUCTIONS = [
   `Help the AI learn the concept one step at a time. Don't tell it everything at once.`,
   `Make sure to guide the AI along and keep it on track.`
-]
+];
+
+export const IS_TOXIC_REPLY = 'Oops! I was about to write something but it was flagged by the admins as toxic. Please try again.';
 
 export const CONCEPTS_METADATA = [
   {
