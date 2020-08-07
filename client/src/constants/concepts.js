@@ -6,7 +6,7 @@ export const GENERAL_INSTRUCTIONS = [
   `Make sure to guide the AI along and keep it on track.`
 ];
 
-export const IS_TOXIC_REPLY = 'Oops! I was about to write something but it was flagged by the admins as toxic. Please try again.';
+export const IS_TOXIC_REPLY = 'Oops! I was about to write something but it was flagged as toxic. Please try again.';
 
 export const CONCEPTS_METADATA = [
   {
