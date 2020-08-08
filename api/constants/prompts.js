@@ -66,5 +66,15 @@ exports.PROMPTS = {
     params: {
       temperature: 0.9
     }
+  },
+
+  'soccer': {
+    text: dedent`
+    The following is a conversation between a tutor and a middle school student who is learning the rules of soccer for the first time. The student has lots of questions about the rules and strategies.
+
+    `,
+    params: {
+      temperature: 0.9
+    }
   }
 };

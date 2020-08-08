@@ -65,4 +65,18 @@ export const CONCEPTS_METADATA = [
       `Tutor the AI on how superposition works in quantum mechanics.`
     ]
   },
+
+  {
+    sectionTitle: 'Fun'
+  },
+  {
+    name: 'soccer',
+    displayName: 'Rules of soccer',
+    humanFirstMessage: null,
+    aiFirstMessage: 'How does the game of soccer work?',
+    instructions: [
+      `Tutor the AI on the rules of soccer (assume they know nothing).`,
+      `If you'd like, you can also teach them strategies.`
+    ]
+  },
 ]
