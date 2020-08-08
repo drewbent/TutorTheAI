@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const apiRouter = require('./routers/api.js');
 const mongoose = require('mongoose');
@@ -52,12 +53,13 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build')))
 
 app.use('/api/v1', apiRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-})
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
  
 app.listen(port, () => {
   console.log(`Server is running on port: ${ port }`)
