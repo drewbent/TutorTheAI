@@ -39,7 +39,6 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  proxy: true,
   cookie: {
     maxAge: 20*60*1000 // 20 mins
   }
