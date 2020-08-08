@@ -15,7 +15,7 @@ import {
 import { API_URL } from '../constants/axios';
 import moment from 'moment';
 import ReCAPTCHA from "react-google-recaptcha";
-import { RECAPTCHA__SITE_KEY } from '../constants/recaptcha';
+import { RECAPTCHA_SITE_KEY } from '../constants/recaptcha';
 import { AppToaster } from '../components/AppToaster';
 import { GA } from '../services/GA';
 
@@ -222,7 +222,7 @@ export default function ActiveConversation(props) {
 
         {!hasStarted &&
           <ReCAPTCHA
-            sitekey={ RECAPTCHA__SITE_KEY }
+            sitekey={ RECAPTCHA_SITE_KEY }
             onChange={ onCaptchaChange }
           />
         }
