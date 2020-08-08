@@ -222,12 +222,8 @@ const ChatControllerHelper = {
   },
 
   verifyCaptcha: async (captchaValue, req) => {
-    console.log(req.session.captchaStatus);
-    console.log(typeof req.session.captchaStatus);
     if (req.session.captchaStatus) {
       // No need to use Captcha; already stored in session
-      console.log('in loop');
-      console.log(req.session.captchaStatus === 'verified');
       return (req.session.captchaStatus === 'verified');
     }
 
@@ -241,9 +237,6 @@ const ChatControllerHelper = {
     const isSuccess = resp && resp.data && resp.data.success;
 
     req.session.captchaStatus = isSuccess ? 'verified' : '';
-
-    console.log('is success?');
-    console.log(isSuccess);
 
     return isSuccess;
   }
