@@ -67,6 +67,20 @@ export const CONCEPTS_METADATA = [
   },
 
   {
+    sectionTitle: 'Programming'
+  },
+  {
+    name: 'forloops',
+    displayName: 'For loops',
+    humanFirstMessage: null,
+    aiFirstMessage: `Could you please help me understand 'for loops'? I don't get why you would use them.`,
+    instructions: [
+      `Tutor the AI on how 'for loops' work in programming.`,
+      `Feel free to write and share code as well (shift+return will give you a line break).`
+    ]
+  },
+
+  {
     sectionTitle: 'Fun'
   },
   {

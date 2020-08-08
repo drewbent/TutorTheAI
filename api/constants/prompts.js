@@ -68,6 +68,17 @@ exports.PROMPTS = {
     }
   },
 
+  'forloops': {
+    text: dedent`
+    The following is a conversation between a tutor and a high school student who is learning about 'for loops' for the first time in programming. The student asks lots of questions.
+
+    `,
+    params: {
+      temperature: 0.9,
+      stop: ['Tutor:', 'Student:']
+    }
+  },
+
   'soccer': {
     text: dedent`
     The following is a conversation between a tutor and a middle school student who is learning the rules of soccer for the first time. The student has lots of questions about the rules and strategies.
