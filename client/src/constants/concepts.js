@@ -3,7 +3,7 @@ export const MAX_NUM_OF_USER_MESSAGES = 12;
 export const GENERAL_INSTRUCTIONS_OVERVIEW = 'You are tutoring the AI, who is playing the role of a high schooler learning the concept for the first time. They have general background knowledge on the subject.';
 export const GENERAL_INSTRUCTIONS = [
   `Help the AI learn the concept one step at a time. Don't tell it everything at once.`,
-  `Make sure to guide the AI along and keep it on track.`
+  `It works best if you start by explaining things instead of asking the AI what it already knows.`
 ];
 
 export const IS_TOXIC_REPLY = 'Oops! I was about to write something but it was flagged as toxic. Please try again.';

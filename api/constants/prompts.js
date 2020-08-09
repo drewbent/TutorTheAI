@@ -20,7 +20,7 @@ exports.BASE_CONTENT_FILTER_PARAMETERS = {
 exports.PROMPTS = {
   'hybridization': {
     text: dedent`
-      The following is a conversation between a tutor and a high school student who is learning sp^3 hybridization. The student stays on topic and asks a number of questions back to the tutor when he doesn't fully understand sp^3 hybridization.
+      The following is a conversation between a tutor and a high school student who is learning sp^3 hybridization. The student is very friendly, stays on topic, and asks a number of questions back to the tutor when he doesn't fully understand sp^3 hybridization.
     
     `,
     params: {
@@ -30,7 +30,7 @@ exports.PROMPTS = {
 
   'atoms': {
     text: dedent`
-    The following is a conversation between a tutor and a middle school student who is learning about atoms. The student stays on topic and asks a number of questions back to the tutor when she doesn't fully understand what an atom is.
+    The following is a conversation between a tutor and a middle school student who is learning about atoms. The student is very friendly, stays on topic, and asks a number of questions back to the tutor when she doesn't fully understand what an atom is.
     
     `,
     params: {
@@ -40,7 +40,7 @@ exports.PROMPTS = {
 
   'plant-animal-cells': {
     text: dedent`
-      The following is a conversation between a tutor and a high school student who is learning the difference between plant and animal cells. The student stays on topic and asks a number of questions back to the tutor when he doesn't fully understand the difference between plant and animal cells.
+      The following is a conversation between a tutor and a high school student who is learning the difference between plant and animal cells. The student is very friendly, stays on topic, and asks a number of questions back to the tutor when he doesn't fully understand the difference between plant and animal cells.
 
     `,
     params: {
@@ -50,7 +50,7 @@ exports.PROMPTS = {
 
   'central-dogma': {
     text: dedent`
-    The following is a conversation between a tutor and a high school student who is learning about the central dogma of molecular biology. The student stays on topic and asks a number of questions back to the tutor when she doesn't fully understand the central dogma concepts.
+    The following is a conversation between a tutor and a high school student who is learning about the central dogma of molecular biology. The student is very friendly, stays on topic, and asks a number of questions back to the tutor when she doesn't fully understand the central dogma concepts.
 
     `,
     params: {
@@ -60,7 +60,7 @@ exports.PROMPTS = {
 
   'superposition': {
     text: dedent`
-    The following is a conversation between a tutor and a college student who is learning about superposition in quantum mechanics. The student stays on topic and asks a number of questions back to the tutor when she doesn't fully understand superposition.
+    The following is a conversation between a tutor and a college student who is learning about superposition in quantum mechanics. The student is very frieldy, stays on topic, and asks a number of questions back to the tutor when she doesn't fully understand superposition.
 
     `,
     params: {
@@ -70,7 +70,7 @@ exports.PROMPTS = {
 
   'forloops': {
     text: dedent`
-    The following is a conversation between a tutor and a high school student who is learning about 'for loops' for the first time in programming. The student asks lots of questions.
+    The following is a conversation between a tutor and a high school student who is learning about 'for loops' for the first time in programming. The student is very friendly and asks lots of questions.
 
     `,
     params: {
@@ -81,7 +81,7 @@ exports.PROMPTS = {
 
   'soccer': {
     text: dedent`
-    The following is a conversation between a tutor and a middle school student who is learning the rules of soccer for the first time. The student has lots of questions about the rules and strategies.
+    The following is a conversation between a tutor and a middle school student who is learning the rules of soccer for the first time. The student is very friendly has lots of questions about the rules and strategies.
 
     `,
     params: {
