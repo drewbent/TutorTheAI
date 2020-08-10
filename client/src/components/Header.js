@@ -50,7 +50,9 @@ export default function Header(props) {
           onClose={ () => setIsEmailOpen(false) }
           title="Contact">
         <S.DialogBody>
-          Questions or feedback? Please contact <a href="mailto:dbent@stanford.edu">Drew</a>.
+          Questions or feedback? <a href="https://forms.gle/fYMCDhDCQ2wEM2yn8" target="_blank" rel="noopener noreferrer">Submit here</a>.
+          <br />
+          You can also email <a href="mailto:dbent@stanford.edu">Drew</a>.
         </S.DialogBody>
       </MyDialog>
 
