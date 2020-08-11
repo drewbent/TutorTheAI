@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.84985372.chunk.css",
-    "main.js": "/static/js/main.19ead33a.chunk.js",
-    "main.js.map": "/static/js/main.19ead33a.chunk.js.map",
+    "main.js": "/static/js/main.f65cbfbb.chunk.js",
+    "main.js.map": "/static/js/main.f65cbfbb.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.09b85ec0.js",
     "runtime-main.js.map": "/static/js/runtime-main.09b85ec0.js.map",
     "static/css/2.83252754.chunk.css": "/static/css/2.83252754.chunk.css",
-    "static/js/2.f3d1a683.chunk.js": "/static/js/2.f3d1a683.chunk.js",
-    "static/js/2.f3d1a683.chunk.js.map": "/static/js/2.f3d1a683.chunk.js.map",
+    "static/js/2.7d33814b.chunk.js": "/static/js/2.7d33814b.chunk.js",
+    "static/js/2.7d33814b.chunk.js.map": "/static/js/2.7d33814b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.38faf513fdba792820bc80365c70e26b.js": "/precache-manifest.38faf513fdba792820bc80365c70e26b.js",
+    "precache-manifest.420671b32effe0126d648832edfc97ff.js": "/precache-manifest.420671b32effe0126d648832edfc97ff.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.83252754.chunk.css.map": "/static/css/2.83252754.chunk.css.map",
     "static/css/main.84985372.chunk.css.map": "/static/css/main.84985372.chunk.css.map",
-    "static/js/2.f3d1a683.chunk.js.LICENSE.txt": "/static/js/2.f3d1a683.chunk.js.LICENSE.txt",
+    "static/js/2.7d33814b.chunk.js.LICENSE.txt": "/static/js/2.7d33814b.chunk.js.LICENSE.txt",
     "static/media/alien-large.png": "/static/media/alien-large.d930733d.png",
     "static/media/alien.png": "/static/media/alien.112de35e.png",
     "static/media/chat-icon.svg": "/static/media/chat-icon.e0d2b748.svg",
@@ -24,8 +24,8 @@
   "entrypoints": [
     "static/js/runtime-main.09b85ec0.js",
     "static/css/2.83252754.chunk.css",
-    "static/js/2.f3d1a683.chunk.js",
+    "static/js/2.7d33814b.chunk.js",
     "static/css/main.84985372.chunk.css",
-    "static/js/main.19ead33a.chunk.js"
+    "static/js/main.f65cbfbb.chunk.js"
   ]
 }
