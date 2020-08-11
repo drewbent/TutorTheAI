@@ -6,7 +6,8 @@ import styled, { css } from 'styled-components';
 import Header from '../components/Header';
 import SaveSessionButton from '../components/SaveSessionButton';
 import { API_URL } from '../constants/axios';
-import logo from '../images/logo.png';
+import avatar1 from '../images/logo.png';
+import avatar2 from '../images/avatars/alien-large.png';
 import { getConceptDisplayName } from '../helpers';
 import EvaluationControls from '../components/EvaluationControls';
 import ScoreDisplay from '../components/ScoreDisplay';
@@ -27,9 +28,11 @@ export default function SavedConversation(props) {
   const messageListDefault = locationState && locationState.messageList;
   const conceptDefault = locationState && locationState.concept;
   const timeDefault = locationState && locationState.time;
+  const isSpecialAvatarDefault = locationState && locationState.isSpecialAvatar;
   const [messageList, setMessageList] = useState(messageListDefault);
   const [concept, setConcept] = useState(conceptDefault);
   const [time, setTime] = useState(timeDefault);
+  const [isSpecialAvatar, setIsSpecialAvatar] = useState(isSpecialAvatarDefault);
   const [scores, setScores] = useState([]);
 
   // URL params
@@ -46,6 +49,7 @@ export default function SavedConversation(props) {
         const scores = data && data.scores;
 
         setTime(chat.displayedTimestamp);
+        setIsSpecialAvatar(chat.avatar === 1);
         setConcept({
           displayName: getConceptDisplayName(chat.promptName)
         });
@@ -129,7 +133,8 @@ export default function SavedConversation(props) {
             dataToSave={{
               messageList,
               concept,
-              time
+              time,
+              avatar: isSpecialAvatar ? 1 : 0
             }} />
         </S.Centered>
       }
@@ -141,7 +146,7 @@ export default function SavedConversation(props) {
           return (
             <S.CardRow key={ i } isMe={ isMe }>
               {!isMe &&
-                <S.AILogo src={ logo } />
+                <S.AILogo src={ isSpecialAvatar ? avatar2 : avatar1 } />
               }
               <S.Card
                   interactive={ true }

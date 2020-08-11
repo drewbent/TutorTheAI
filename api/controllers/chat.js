@@ -70,6 +70,7 @@ const ChatController = {
     const messageList = req.body.messageList;
     const concept = req.body.concept;
     const time = req.body.time;
+    const avatar = req.body.avatar;
     const isSharingPublicly = req.body.isSharingPublicly;
 
     const promptName = concept.name;
@@ -85,6 +86,7 @@ const ChatController = {
       prompt,
       messages,
       displayedTimestamp,
+      avatar,
       isSharingPublicly
     }
     try {
@@ -216,7 +218,7 @@ const ChatControllerHelper = {
     const text = firstChoice && firstChoice.text;
     const logprobs = firstChoice && firstChoice.logprobs;
 
-    console.log(logprobs.top_logprobs);
+    //console.log(logprobs.top_logprobs);
 
     return (text === '2');
   },

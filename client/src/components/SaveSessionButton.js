@@ -98,7 +98,8 @@ SaveSessionButton.propTypes = {
   dataToSave: PropTypes.shape({
     messageList: PropTypes.array,
     concept: PropTypes.object,
-    time: PropTypes.string
+    time: PropTypes.string,
+    avatar: PropTypes.number
   })
 }
 

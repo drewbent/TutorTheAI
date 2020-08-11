@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { Launcher } from 'react-chat-window';
-import logoWhiteBkg from '../images/logo_white_bkg.png';
+import avatar1 from '../images/avatars/logo_white_bkg.png';
+import avatar2 from '../images/avatars/alien.png';
 import Header from '../components/Header';
 import styled from 'styled-components';
 import { Button, Spinner } from '@blueprintjs/core';
@@ -67,6 +68,21 @@ export default function ActiveConversation(props) {
     messagesRemainingStr = messagesRemainingStr.slice(0, -1);
   }
 
+  // Special avatar
+  const [isSpecialAvatar, setIsSpecialAvatar] = useState(false);
+  const escFunction = useCallback((event) => {
+    if(event.keyCode === 27) {
+      setIsSpecialAvatar(true);
+    }
+  }, []);
+  useEffect(() => {
+    document.addEventListener('keydown', escFunction, false);
+
+    return () => {
+      document.removeEventListener('keydown', escFunction, false);
+    };
+  }, []);
+
   useEffect(() => {
     if ((messagesRemaining === 0 && lastMessageFromAI) || finishingEarly) {
       // Completed with messages
@@ -76,7 +92,8 @@ export default function ActiveConversation(props) {
         history.push('/conversation', {
           messageList: messageList,
           concept: concept,
-          time: time
+          time: time,
+          isSpecialAvatar: isSpecialAvatar
         });
       }, finishingEarly ? 0 : 1800);
 
@@ -245,8 +262,8 @@ export default function ActiveConversation(props) {
       {hasCompletedCaptcha &&
         <Launcher
           agentProfile={{
-            teamName: 'Tutor the AI',
-            imageUrl: logoWhiteBkg
+            teamName: isSpecialAvatar ? 'Kilkok' : 'Tutor the AI',
+            imageUrl: isSpecialAvatar ? avatar2 : avatar1
           }}
           onMessageWasSent={ handleUserMessage }
           handleClick={ handleLauncherClick }

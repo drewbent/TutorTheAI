@@ -19,6 +19,9 @@ const chatSchema = new mongoose.Schema({
   isSharingPublicly: {
     type: Boolean
   },
+  avatar: {
+    type: Number
+  },
   scoreCount: {
     type: Number,
     default: 0
