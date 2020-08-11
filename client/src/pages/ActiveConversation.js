@@ -81,7 +81,7 @@ export default function ActiveConversation(props) {
     return () => {
       document.removeEventListener('keydown', escFunction, false);
     };
-  }, []);
+  }, [escFunction]);
 
   useEffect(() => {
     if ((messagesRemaining === 0 && lastMessageFromAI) || finishingEarly) {
@@ -108,7 +108,7 @@ export default function ActiveConversation(props) {
     }
   }, [
     messagesRemaining, lastMessageFromAI, concept, history, messageList,
-    finishingEarly
+    finishingEarly, isSpecialAvatar
   ]);
 
   if (!concept) {
