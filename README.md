@@ -1,6 +1,6 @@
 # Tutor the AI
 
-## Humans tutoring OpenAI on science concepts
+## Humans tutoring GPT-3 on science concepts
 
 _"If you want to master something, teach it."_
 
@@ -13,6 +13,6 @@ But who then is to be the learner? That's where the AI comes in.
 3. Identify your gaps in understanding
 4. Fill in those gaps
 
-While I took down the hosted website, you're welcome to play around with it yourself if you have an OpenAI API key.
+While I took down the hosted website, you're welcome to play around with it yourself if you have an OpenAI GPT-3 API key.
 
 You can also see Reddit's response to the hackathon project [here](https://www.reddit.com/r/biology/comments/i76rhe/practicing_your_bio_knowledge_by_tutoring_an_ai/).
