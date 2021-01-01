@@ -2,8 +2,6 @@
 
 ## Humans tutoring OpenAI on science concepts
 
----
-
 _"If you want to master something, teach it."_
 
 But who then is to be the learner? That's where the AI comes in.
